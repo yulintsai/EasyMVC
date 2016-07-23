@@ -1,0 +1,98 @@
+.C_input{
+    padding: 8px;
+    display: block;
+    border: none;
+    border-radius: 15px;
+    border-bottom: 2px solid #ff0000;
+    width: 100%;
+    font: inherit;
+    margin: 0;
+}
+body {
+    font-family: Verdana,sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+        background-position: center center;
+    background-size: auto;
+    background-attachment: fixed;
+    background-image: url('https://lab-rain123473.c9users.io/project/img/colorful.jpg ');
+    margin: 0;
+}
+
+
+
+#signup {
+    left: 36.5%;
+    position: fixed;
+    width: 35%;
+    height: 30%;
+    top: 40%;
+}
+#go_signup{
+color:white;
+position: fixed;
+width:20%;
+height: 8%;
+right:30%;
+border-radius: 20px;
+margin-top:2px;
+margin-bottom: 2px;
+background-image: url( 'https://lab-rain123473.c9users.io/project/img/red.jpg ' )
+}
+#main_screen{
+color:white;
+font-size: 17em;
+text-align:center;
+position: relative;
+width: 55%;
+height: 40%;
+}
+#login_btn{
+    height: 50px;
+    width: 42.5%;
+    position: fixed;
+    left: 5%;
+    background: rgba(39, 150, 176, 0.59);
+    border: white 2px solid;
+    font-size: 2em;
+    color: coral;
+}
+#signup_btn{
+    height: 50px;
+    width: 42.5%;
+    position: fixed;
+    right: 5%;
+    background: rgba(255, 127, 85, 0.8);
+    color: rgb(0, 88, 255);
+    border: white 2px solid;
+    font-size: 2em;
+}
+input[placeholder], [placeholder], *[placeholder]{
+    text-align:center;
+
+    color: #19dca8 !important;
+}
+#log_div
+{
+    position:relative;
+    bottom:20px;
+    height: 90px;
+    background-color: white;
+    width: 100%;
+    margin: 0;
+    z-index: 1;
+}
+#edit{
+    width: 5%;
+    height: 10%;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+}
+#show_online{
+    background: aqua;
+    width: 20%;
+    height: 5%;
+    position: fixed;
+    bottom: 20px;
+}
