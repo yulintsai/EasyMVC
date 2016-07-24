@@ -1,42 +1,19 @@
 <?php
-/*
-class App {
-    
-    public function __construct() {
-        $this->parseUrl();
-    }
-    
-    public function parseUrl() {          //印出url上的東西
-        if (isset($_GET["url"])) {
-            echo $_GET["url"];
-        }
-    }
-    
-}*/
 
 
 
 class App {
     
     public function __construct() {
-        //var_dump($this->parseUrl());
-     $url = $this->parseUrl();
         
-      /*  $controllerName = "{$url[0]}Controller";
-        echo $controllerName;
-    $controllerName = "{$url[0]}Controller";//控制器名稱
-        require_once "controllers/$controllerName.php";
-        $controller = new $controllerName;
-        $methodName = $url[1];
-        echo $methodName;
-        unset($url[0]); unset($url[1]);
-        $params = $url ? array_values($url) : Array();
-        echo "<hr>";
-        var_dump($params);   */
+         $url = $this->parseUrl();
 
-        $url = $this->parseUrl();
-        
         $controllerName = "{$url[0]}Controller";
+        
+        //如果導入為首頁，則自動導向GameController
+
+        if(!$url)
+        $controllerName = "GameController";
         if (!file_exists("controllers/$controllerName.php"))
             return;
         require_once "controllers/$controllerName.php";

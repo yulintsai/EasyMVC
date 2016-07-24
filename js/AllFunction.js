@@ -1,4 +1,4 @@
-var music=new Array("button.wav","correct.mp3");
+var music=new Array("/EasyMVC/voice/button.wav","/EastMVC/voice/correct.mp3");
 function playSound(i){
 	//在Div內放置Embed並指定其src = 某音效位置
 	document.getElementById("sounds").innerHTML = 
@@ -13,16 +13,10 @@ function startgame_lv(lv)
  
   /*---------------------產生愛心----------------------------*/
  
-       url="CreateColorBall.php?lv="+lv;        //去撈球
+       url="/EasyMVC/models/CreateColorBall.php?lv="+lv;        //去撈球
        $.get(url,function(data){
        $('div#ball_box').append(data);
-     /*   $.ajax({
-                    url: "color.php?lv="+lv+"&mode"+mode,
-                    type:"GET",
-                    datatype:"html",
-                    complete:function(data){('div#ball_box').append(data);}
-                   // success:function(data){alert(data);}
-                });*/
+     
                $('.ball').mouseover(function(){ //滑鼠移入球上時
                $(this).css('height','220px');
                $(this).css('width','220px');
@@ -74,12 +68,12 @@ function comboscore(combo) {
 function CreateHearts(){
  
  for(var heart=3;heart>0;heart--){
-  $("#heart").append("<img class='heart' id='heart"+heart+"'style='width:60px ;height:60px'src='../img/heart.png'>");
+  $("#heart").append("<img class='heart' id='heart"+heart+"'style='width:60px ;height:60px'src='img/heart.png'>");
  }
 }
 $(document).ready(function(){
  game_time=21;                        //設定遊戲秒數
-  $('#player').load("/EasyMVC/models/UserLvExp.php"); 
+  $('#player').load("/EasyMVC/Game/UserLvExp"); 
   
 $("#start").click(function(){
  CreateHearts();
@@ -126,7 +120,7 @@ $('#close_gameover').click(function() {$("#game_over").hide(1000);});//GAMEOVER�
 
 
 $('#rank').click(function() {//GAMEOVER的RANK按鈕
-    url_rank="/EasyMVC/models/GlobalRank.php";
+    url_rank="/EasyMVC/Game/GlobalRank";
     $.get(url_rank,function(data){
     $('#user_scoreboard').html(data);});
 });
@@ -139,7 +133,7 @@ $('#rank').click(function() {//GAMEOVER的RANK按鈕
 // });
 $('#log,#nav_rank').click(function() { //左邊個人排行按鈕
      $('#game_over').show(1000);
-     url_rank="/EasyMVC/models/UserLogScore.php?score="+score;
+     url_rank="/EasyMVC/Game/UserLogScore?";
      $.get(url_rank,function(data){
      $('#user_scoreboard').html(data);});
 });
@@ -154,6 +148,7 @@ $(".i_m").mouseover(function(){
  $(this).animate({'top':'40%'});
 });
  $('.i_m').click(function() { //左邊模式選擇器按鈕
+     $("#start").prop("value","START");
      gm=$(this).prop("id");
      
      function ChangeModel(){

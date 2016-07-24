@@ -6,5 +6,5 @@ $go_delete=mysqli_query($link,$delete);
 mysqli_close($link); */
 session_start();
 session_unset();
-header("Location:/EasyMVC/Home/loginPage");
+header("Location:/EasyMVC/");
 ?>

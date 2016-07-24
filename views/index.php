@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" 
 xmlns:og="http://ogp.me/ns#" 
-xmlns:fb="http://www.facebook.com/2008/fbml"
->
+xmlns:fb="http://www.facebook.com/2008/fbml">
 <!-- oncontextmenu="window.event.returnValue=false;"
 onselectstart="return false;"
 oncontextmenu="window.event.returnValue=false;alert('雨霖版權所有')" -->
@@ -13,18 +12,17 @@ oncontextmenu="window.event.returnValue=false;alert('雨霖版權所有')" -->
 <meta property="og:title" content="ColorBall"/>
 <meta name="og:description" content="A EASY GAME" />
 <meta property="og:type" content="website"/>
-<link rel="stylesheet" href="../css/main.css">
-<link rel="stylesheet" href="../css/ball.css"> 
-<link rel="stylesheet" href="../css/bootstrap.min.css"> 
-<script type="text/javascript" src="../jquery/jquery-3.0.0.js"></script> 
-<script type="text/javascript" src="../js/ball.js"></script> 
-<script type="text/javascript" src="../js/EventKey.js"></script> 
-<script type="text/javascript" src="../js/AllFunction.js"></script> 
-<link rel="Shortcut Icon" type="image/x-icon" href="../img/icon.ico" />
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/ball.css"> 
+<script type="text/javascript" src="jquery/jquery-3.0.0.js"></script> 
+<script type="text/javascript" src="js/Timer.js"></script> 
+<script type="text/javascript" src="js/EventKey.js"></script> 
+<script type="text/javascript" src="js/AllFunction.js"></script> 
+<link rel="Shortcut Icon" type="image/x-icon" href="img/icon.ico" />
 <title>ColorBall</title>
 </head>
 <script>
-
+//facebook
 (function(d, s, id) { 
 　var js, fjs = d.getElementsByTagName(s)[0];
 　if (d.getElementById(id)) return;
@@ -32,11 +30,10 @@ oncontextmenu="window.event.returnValue=false;alert('雨霖版權所有')" -->
 　js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1";
 　fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
-</script>
-<script>
+
 var fbhtml_url=window.location.toString();
 function ShowOnlinePlayers(){
-            var t=setTimeout("$.ajax({url:'CountOnlinePlayer',type:'POST',success:function(data){$('#show_online').html(data);}});",1500);
+            var t=setTimeout("$.ajax({url:'/EasyMVC/Game/CountOnlinePlayer',type:'POST',success:function(data){$('#show_online').html(data);}});",1500);
         };
     $(document).ready(function(){
         $.ajax({url: "AddVisitor.",type:"POST"});//AddVistorSum
@@ -46,7 +43,7 @@ function ShowOnlinePlayers(){
        // $('#show_online').mouseover(function(){ });
         $("#signup_btn").click(function(){
         $("#login_form").hide(1000,function(){
-            $("#login_div").load("SignUp");
+            $("#login_div").load("/EasyMVC/models/SignUp");
             });
         });
 
@@ -63,7 +60,7 @@ if(!isset($_SESSION['status'])){
         <p style="top: 15%;left: 15%;position:fixed;" ;="">Welcome </p>
     </div>
     <div id="login_div"style="bottom: 20%;position: fixed;bottom: 15%;left: 45%;">
-        <form method="post" action="Gologin" id="login_form">
+        <form method="post" action="Game/Gologin" id="login_form">
             <table align="center">
              <tr>
                <td><div style="width: 30%;position: fixed;left: 37%;bottom: 15.5%;">
@@ -76,7 +73,7 @@ if(!isset($_SESSION['status'])){
     </form>
     </div>
    <?php }else { ?>
-   <script type="text/javascript" src="../js/UpdateStatus.js"></script> 
+   <script type="text/javascript" src="js/UpdateStatus.js"></script> 
       <div id="sounds"></div>
 <div id="game_over" style="display:none">
            <div id='user_info'>
@@ -98,7 +95,7 @@ if(!isset($_SESSION['status'])){
             <div id='gv_top'>
                 <div id='gvt_u'></div>
                 <div style="color: red;">
-                    <img id='edit'src="../img/gear.png">
+                    <img id='edit'src="img/gear.png">
                     <h1 id="g_c">CHOOSE GAME MODEL</h1>
                 	<div id="sounds"></div>
                     <h1 id="g_time"></h1>

@@ -10,9 +10,8 @@ function showTime(){
      setTimeout("showTime()",1000);
     }else{ //GAMEOVER時間到做的事情
         $('.ball').prop("disabled",true);
+        $("#ball_box button").remove();
         $("#g_time").text("Time up").css({"background-color":"inherit"});
-        $('#start').prop("value","RESTART");
-        $('#start').prop("disabled",false);
         
         $("#game_over").show(1000,function(){
             $("#replay").show();
@@ -24,31 +23,15 @@ function showTime(){
             //在gameover時show出成績板
     
             
-       url_score="GameOver.php?score="+score;
+       url_score="/EasyMVC/Game/endGame?score="+score;
         $.get(url_score,function(data){
          $('#user_scoreboard').html(data);
          $('#lv,#user,#exp,#showcombo,.heart').remove();
-         $('#player').load('UserLvExp.php');
+         $('#player').load('/EasyMVC/Game/UserLvExp');
        //傳送成績
-        })
-        
-      //  $("#showbox button").remove();
-       // t=t+10;
-       // startgame_lv(2);
-        /*if(confirm("是否再來一次")){
-            
-        }else{
-        alert("你按下取消");
-            }*/
-        
-    }
+         })
+        }
     
-    
-        //location.href='https://lab-rain123473.c9users.io/project/php/testphp/ball.php';
-    
-
-    //每秒執行一次,showTime()
-   
     }
     
     
