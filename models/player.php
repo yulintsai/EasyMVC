@@ -39,19 +39,20 @@ class player{
     }//全部玩家排行
     
     function GoSignup(){
-        $email=test_input($_POST['Email']);
+        include_once("mysql.inc.php");
+        $email=($_POST['Email']);
         $msg1="<script> alert('Please input Your ";
         $msg2="');location.href='index.php' </script>";
 
 
 //檢查Input
-
-function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
-}
+    
+    // function ($data) {
+    //   $data = trim($data);
+    //   $data = stripslashes($data);
+    //   $data = htmlspecialchars($data);
+    //   return $data;
+    // }
 
 
 
@@ -62,7 +63,7 @@ if(isset($_POST['signup'])){
             echo $idErr;
             echo $msg1."Name".$msg2;
      }else{
-            $account=test_input($_POST["Account"]) ;
+            $account=($_POST["Account"]) ;
             $username=trim($_POST["Username"]);
             if (!preg_match("/^[a-zA-Z ]*$/",$account)) {
                 
@@ -80,7 +81,7 @@ if(isset($_POST['signup'])){
             
     if($_POST['Password']!=$_POST['RePassword']){
             echo $msg1."password again".$msg2;
-            $pwdErr="Password is NOT the same";
+            $pwdErr="Password is NOT the Same";
     }else{
         $check++; 
     }
@@ -89,14 +90,14 @@ if(isset($_POST['signup'])){
            $emailErr="E-mail is Empty";
            echo $msg1."E-mail".$msg2;
         }else{
-          $pw = test_input($_POST['Password']);
+          $pw = ($_POST['Password']);
           $pw = md5($_POST["Password"]);
           $check++; 
         }
           
           
     if($check>2){
-          include_once("mysql.inc.php");
+          
           $ip=$_POST['u_ip'];
           
           $account=$mysqli->real_escape_string($account);

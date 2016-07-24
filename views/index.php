@@ -33,7 +33,7 @@ oncontextmenu="window.event.returnValue=false;alert('雨霖版權所有')" -->
 
 var fbhtml_url=window.location.toString();
 function ShowOnlinePlayers(){
-            var t=setTimeout("$.ajax({url:'/EasyMVC/Game/CountOnlinePlayer',type:'POST',success:function(data){$('#show_online').html(data);}});",1500);
+            var t=setTimeout("$.ajax({url:'/EasyMVC/Game/CountOnlinePlayer',type:'POST',async: true,success:function(data){$('#show_online').html(data);}});",1500);
         };
     $(document).ready(function(){
         $.ajax({url: "AddVisitor.",type:"POST"});//AddVistorSum
@@ -43,7 +43,7 @@ function ShowOnlinePlayers(){
        // $('#show_online').mouseover(function(){ });
         $("#signup_btn").click(function(){
         $("#login_form").hide(1000,function(){
-            $("#login_div").load("/EasyMVC/models/SignUp");
+            $("#login_div").load("/EasyMVC/Game/loadSignup");
             });
         });
 

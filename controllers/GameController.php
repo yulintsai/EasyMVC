@@ -19,9 +19,14 @@ class GameController extends Controller {
         }
     }
     
+    function loadSignup(){
+        $load = $this->model("load");
+        $load->loadSign();
+    }
+    
     function GoSignup(){
-        $gosn = $this->model("player");
-        $gosn->GoSignup();
+        $gotosn = $this->model("player");
+        $gotosn->GoSignup();
     }
     
     function Goedit(){
