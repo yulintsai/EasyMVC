@@ -24,6 +24,6 @@ function loadSign(){
           <input type='submit' id='go_signup' name='signup' value='Sign Up' />
         </div>
     </form>";
-}
+} //載入註冊畫面
 }
 ?>
