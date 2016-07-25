@@ -1,6 +1,6 @@
 /*--------------------產生音效-------------------------*/
         var music=new Array("button.wav","correct.mp3");
-           function playSound(i){
+       function playSound(i){
       	//在Div內放置Embed並指定其src = 某音效位置
       	document.getElementById("sounds").innerHTML = 
       	"<embed width=0 height=0 src=/EasyMVC/voice/"+music[i]+" autostart='true'></embed>";
@@ -150,7 +150,6 @@ $(document).ready(function(){
           $('#user_scoreboard').html(data);});
       });
       
-      
       $('#log,#nav_rank').click(function() { //左邊個人排行按鈕
            $('#game_over').show(1000);
            url_rank="/EasyMVC/Game/UserLogScore?";
@@ -219,7 +218,7 @@ $(document).ready(function(){
     
         
       
-       /*-----------------------------線上人數統計器------------*/
+     /*-----------------------------線上人數統計器------------*/
              function ShowOnlinePlayers(){
               $.ajax({url:'/EasyMVC/Game/CountOnlinePlayer',type:'POST',async: true,success:function(data){$('#show_online').html(data);}});
               var t=setTimeout(ShowOnlinePlayers,1500);

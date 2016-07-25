@@ -52,7 +52,7 @@ class edit{
                      echo "<script> alert('Update Data Success');location.href='/EasyMVC'</script>";
                     // header("Location: logout.php");
                     if($_POST['DeleteAllScoreData']=="delete"){     //check delete checkbox
-                        $Dsql="DELETE FROM g_log WHERE u_id = '$u_id'";
+                        $Dsql="DELETE FROM GameLog WHERE u_id = '$u_id'";
                         if($mysqli->query($Dsql)){
                             echo "<script>alert('PLEASE LOGIN AGAIN');location.href='/EasyMVC';</script>";
                         }
