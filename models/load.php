@@ -58,6 +58,16 @@ class load{
       </div>
     </form>";
     }
-
+    
+    function addVisitor(){
+        include_once("mysql.inc.php");
+        $sql="UPDATE information SET visit_num=visit_num+1";//games total
+        $visit=$mysqli->query($sql);
+        if($visit){
+        //echo "success +1 visit";
+        }else{
+            echo "error";
+        }
+    }
 }
 ?>

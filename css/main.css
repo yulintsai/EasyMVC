@@ -96,3 +96,17 @@ input[placeholder], [placeholder], *[placeholder]{
     position: fixed;
     bottom: 20px;
 }
+#heart{
+    position: fixed;
+    width: 180px;
+    top: 2%;
+    height: 60px;
+    right: 15%;
+    
+}
+combo{
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    right: 25%;
+}

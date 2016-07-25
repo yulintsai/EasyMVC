@@ -4,11 +4,16 @@ class GameController extends Controller {
     
     function index() {
         $this->view("index");
-    } //首頁的頁面
+    }      //首頁的頁面
     
     function loginPage(){
         $this->view("/EasyMVC/");
     }   //登入的頁面
+    
+    function AddVisitor(){
+        $add = $this->model("load");
+        $add->addVisitor();
+    }  //統計瀏覽人數
     
     function Gologin(){
         if(isset($_POST['login'])){
@@ -32,14 +37,16 @@ class GameController extends Controller {
     function loadEdit(){
         $load = $this->model("load");
         $load->loadEdit();
-    }
+    }    //載入編輯畫面
     
     function GoEdit(){
         $edit=$this->model("edit");
         //var_dump($edit);
         $edit->edit();
         
-    }  //進行編輯
+    }      //進行編輯
+    
+    
    /*==========================================================*/ 
     
     function CountOnlinePlayer(){
@@ -50,29 +57,44 @@ class GameController extends Controller {
     function UserLvExp(){
         $LvExp = $this->model("player");
         $LvExp->UserLvExp();
-    } //玩家經驗值資料
+    }         //玩家經驗值資料
     
     function UserLogScore(){
         $score = $this->model("player");
         $score->UserLogScore();
           
-        }//查分數紀錄
+        }      //查分數紀錄
     
     function GlobalRank(){
         $rank = $this->model("player");
         $rank->GlobalRank();
-    } //查詢全部玩家排行
+    }        //查詢全部玩家排行
     
     
    /*==========================================================*/   
     function UpdateStatus(){
         $update = $this->model("player");
-        $update->pUpdateStatus();
-    } //更新使用者狀態
+        $update->UpdateStatus();
+    }     //更新使用者狀態
+    
+    function startGame(){
+        session_start();
+        $u_id=$_SESSION['u_id'];
+        //一顆球的配色
+      // if(isset($_GET["start"]))
+        if(!isset($_GET['lv'])){
+           echo 'Error';
+        }else{
+            $yu=$this->model("game");
+            $yu->startGame($_GET["lv"],$link,$u_id,$myip);    
+        }
+    }
     
     function endGame(){
         $end = $this->model("game");
         $end->endGame();
-    }     //遊戲結束時動作
+    }          //遊戲結束時動作
+    
+    
 }
 ?>
