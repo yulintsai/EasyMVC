@@ -82,7 +82,7 @@ if(!isset($_SESSION['status'])){
                         <button class='i_m' id='Easy'>Easy</button>
                         <button class='i_m' id='Normal'>Normal</button> 
                         <button class='i_m' id='Hard'>Hard</button> 
-                        <button class='i_m' id='Learning' style="right: 0%;width: 20%;">LearnToPlay</button> 
+                        <button class='i_m' id='Learning' style="right: 0%;width: 20%;">Learning</button> 
                     <div id='g_list'>
                         <button class='g_m' id='Md' style="display:none;">Model</button>
                         <button id='nav_rank'>Score</button> 

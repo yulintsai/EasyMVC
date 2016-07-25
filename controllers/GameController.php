@@ -1,7 +1,6 @@
 <?php
 class GameController extends Controller {
     
-    
     function index() {
         $this->view("index");
     }      //首頁的頁面
@@ -88,7 +87,7 @@ class GameController extends Controller {
             $yu=$this->model("game");
             $yu->startGame($_GET["lv"],$link,$u_id,$myip);    
         }
-    }
+    }        //啟動遊戲動作
     
     function endGame(){
         $end = $this->model("game");

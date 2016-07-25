@@ -3,7 +3,7 @@
     
     $(document).ready(function(){
             
-        $('.i_m,button,.button').click(function(){
+        $('button,.button').click(function(){
         status=$(this).attr("id");
          url="/EasyMVC/Game/UpdateStatus?status="+status;
                $.get(url);

@@ -144,10 +144,10 @@
     }
         
         private function checkW_b($w_b,$all_color){
-            if(!isset($w_b)){//必有一個正確球還有錯誤球的隨機排列
+            if(!isset($w_b)){//必有一個正確球還有錯誤球的隨機排列$w_b為門票
                 $test=rand(0,1);
                 if($test==0){
-                    //打開錯誤球產生
+                    //製造正確球
                     $this->font_c=$all_color[2]; //正確球
                         
                     return -1;

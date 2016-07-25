@@ -104,7 +104,7 @@ input[placeholder], [placeholder], *[placeholder]{
     right: 15%;
     
 }
-combo{
+#combo{
     position: fixed;
     width: 60px;
     height: 60px;

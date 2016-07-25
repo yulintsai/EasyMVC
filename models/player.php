@@ -38,15 +38,13 @@ class player{
           echo "</table>";
     }//全部玩家排行
     
-    //檢查Input
-    
     function test_input($data) {
       $data = trim($data);
       $data = stripslashes($data);
       $data = htmlspecialchars($data);
     //   $this->GoSignup()
       return $data;
-    }
+    } //檢查Input
     
     function GoSignup(){
         include_once("mysql.inc.php");
@@ -108,7 +106,7 @@ if(isset($_POST['signup'])){
              
           if($account==$result[0]){
               echo 'The account is been use!';
-              echo '<meta http-equiv=REFRESH CONTENT=2;url=index.php>';
+              echo '<meta http-equiv=REFRESH CONTENT=2;url=/EasyMVC>';
           }else{
         
             $sql="INSERT INTO UserData(account,id,pwd,email,ip)values('$account','$username','$pw','$email','$ip')";
@@ -116,12 +114,12 @@ if(isset($_POST['signup'])){
           if($mysqli->query($sql))
                 {
                         echo 'OK!';
-                        echo '<meta http-equiv=REFRESH CONTENT=2;url=index.php>';
+                        echo '<meta http-equiv=REFRESH CONTENT=2;url=/EasyMVC>';
                 }
                 else
                 {
                         echo 'ERROR!';
-                        echo '<meta http-equiv=REFRESH CONTENT=2;url=index.php>';
+                        echo '<meta http-equiv=REFRESH CONTENT=2;url=/EasyMVC>';
                 }
               }
            $mysqli->close();    
@@ -145,9 +143,9 @@ else
         $status=$_GET['status'];
         $u_id=$_SESSION['u_id'];
         $logout="INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES ('$u_id','$status','$myip')";
-        $go_logout=mysqli_query($link,$logout);
+        $mysqli->query($logout);
         }else{
-            echo "bye";
+            echo "Error";
         }
     }//更新狀態
     
