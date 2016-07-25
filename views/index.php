@@ -12,43 +12,18 @@ oncontextmenu="window.event.returnValue=false;alert('雨霖版權所有')" -->
 <meta property="og:title" content="ColorBall"/>
 <meta name="og:description" content="A EASY GAME" />
 <meta property="og:type" content="website"/>
-<link rel="stylesheet" href="css/main.css">
-<link rel="stylesheet" href="css/ball.css"> 
-<script type="text/javascript" src="jquery/jquery-3.0.0.js"></script> 
-<script type="text/javascript" src="js/Timer.js"></script> 
-<script type="text/javascript" src="js/EventKey.js"></script> 
-<script type="text/javascript" src="js/AllFunction.js"></script> 
+<?php $this->css('main');?>
+<?php $this->css('ball');?>
+<?php $this->css('bootstrap.min');?>
+<?php $this->js('jquery-3.0.0');?>
+<?php $this->js('Timer');?>
+<?php $this->js('EventKey');?>
+<?php $this->js('AllFunction');?>
+<?php $this->js('facebook');?>
 <link rel="Shortcut Icon" type="image/x-icon" href="img/icon.ico" />
 <title>ColorBall</title>
 </head>
-<script>
-//facebook
-(function(d, s, id) { 
-　var js, fjs = d.getElementsByTagName(s)[0];
-　if (d.getElementById(id)) return;
-　js = d.createElement(s); js.id = id;
-　js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1";
-　fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
 
-var fbhtml_url=window.location.toString();
-function ShowOnlinePlayers(){
-            var t=setTimeout("$.ajax({url:'/EasyMVC/Game/CountOnlinePlayer',type:'POST',async: true,success:function(data){$('#show_online').html(data);}});",1500);
-        };
-    $(document).ready(function(){
-        $.ajax({url: "AddVisitor.",type:"POST"});//AddVistorSum
-        ShowOnlinePlayers();
-        
-
-       // $('#show_online').mouseover(function(){ });
-        $("#signup_btn").click(function(){
-        $("#login_form").hide(1000,function(){
-            $("#login_div").load("/EasyMVC/Game/loadSignup");
-            });
-        });
-
-    });
-</script>
 <body>
 <?php
 session_start();  // 啟用交談期

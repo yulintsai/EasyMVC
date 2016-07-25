@@ -10,6 +10,14 @@ class Controller {
         require_once "../EasyMVC/views/$view.php";
     }
     
+    public function css($css){
+         echo "<link rel='stylesheet' href='/EasyMVC/css/".$css.".css'>";
+     }
+    
+    public function js($js){
+        echo "<script type='text/javascript' src='/EasyMVC/js/".$js.".js'></script> ";
+    }
+    
 }
 
 ?>

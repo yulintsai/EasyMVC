@@ -29,9 +29,15 @@ class GameController extends Controller {
         $gotosn->GoSignup();
     }    //進行註冊
     
-    function Goedit(){
+    function loadEdit(){
+        $load = $this->model("load");
+        $load->loadEdit();
+    }
+    
+    function GoEdit(){
         $edit=$this->model("edit");
-        $edit->goEdit();
+        //var_dump($edit);
+        $edit->edit();
         
     }  //進行編輯
    /*==========================================================*/ 
@@ -55,7 +61,7 @@ class GameController extends Controller {
     function GlobalRank(){
         $rank = $this->model("player");
         $rank->GlobalRank();
-    } //全部玩家排行
+    } //查詢全部玩家排行
     
     
    /*==========================================================*/   

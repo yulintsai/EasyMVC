@@ -38,23 +38,21 @@ class player{
           echo "</table>";
     }//全部玩家排行
     
+    //檢查Input
+    
+    function test_input($data) {
+      $data = trim($data);
+      $data = stripslashes($data);
+      $data = htmlspecialchars($data);
+    //   $this->GoSignup()
+      return $data;
+    }
+    
     function GoSignup(){
         include_once("mysql.inc.php");
-        $email=($_POST['Email']);
+        $email=$this->test_input($_POST['Email']);
         $msg1="<script> alert('Please input Your ";
-        $msg2="');location.href='index.php' </script>";
-
-
-//檢查Input
-    
-    // function ($data) {
-    //   $data = trim($data);
-    //   $data = stripslashes($data);
-    //   $data = htmlspecialchars($data);
-    //   return $data;
-    // }
-
-
+        $msg2="');location.href='/EasyMVC' </script>";
 
 if(isset($_POST['signup'])){
     $check=0;
@@ -63,14 +61,13 @@ if(isset($_POST['signup'])){
             echo $idErr;
             echo $msg1."Name".$msg2;
      }else{
-            $account=($_POST["Account"]) ;
+            $account=$this->test_input($_POST["Account"]) ;
             $username=trim($_POST["Username"]);
             if (!preg_match("/^[a-zA-Z ]*$/",$account)) {
                 
-              $nameErr = "Only letters and white space allowed"; 
+            $nameErr = "Only letters and white space allowed"; 
             $check++;  
             }
-           
         }
     if(empty($_POST['Password'])or empty($_POST['RePassword']) ){
             echo $msg1."password".$msg2;
@@ -90,7 +87,7 @@ if(isset($_POST['signup'])){
            $emailErr="E-mail is Empty";
            echo $msg1."E-mail".$msg2;
         }else{
-          $pw = ($_POST['Password']);
+          $pw=$this->test_input($_POST['Password']);
           $pw = md5($_POST["Password"]);
           $check++; 
         }
@@ -99,19 +96,19 @@ if(isset($_POST['signup'])){
     if($check>2){
           
           $ip=$_POST['u_ip'];
-          
           $account=$mysqli->real_escape_string($account);
           $username=$mysqli->real_escape_string($username);
           $pw=$mysqli->real_escape_string($pw);
           $email=$mysqli->real_escape_string($email);
           
-          //check account
-          $sql = "SELECT account FROM UserData WHERE account='$account'";
-          $CheckSameAc=$mysqli->query($sql);
-          $result= $CheckSameAc->fetch_row($CheckSameAc);
+          //check account 重複
+        $sql = "SELECT account FROM UserData WHERE account='$account'";
+        $CheckSameAc=$mysqli->query($sql);
+        $result= $CheckSameAc->fetch_row();
+             
           if($account==$result[0]){
               echo 'The account is been use!';
-                        echo '<meta http-equiv=REFRESH CONTENT=2;url=index.php>';
+              echo '<meta http-equiv=REFRESH CONTENT=2;url=index.php>';
           }else{
         
             $sql="INSERT INTO UserData(account,id,pwd,email,ip)values('$account','$username','$pw','$email','$ip')";

@@ -1,8 +1,8 @@
-var music=new Array("/EasyMVC/voice/button.wav","/EastMVC/voice/correct.mp3");
+var music=new Array("button.wav","correct.mp3");
 function playSound(i){
 	//在Div內放置Embed並指定其src = 某音效位置
 	document.getElementById("sounds").innerHTML = 
-	"<embed width=0 height=0 src=../voice/"+music[i]+" autostart='true'></embed>";
+	"<embed width=0 height=0 src=/EasyMVC/voice/"+music[i]+" autostart='true'></embed>";
 	}
 	//產生音效
 
@@ -72,6 +72,20 @@ function CreateHearts(){
  }
 }
 $(document).ready(function(){
+ 
+ $("#signup_btn").click(function(){
+        $("#login_form").hide(1000,function(){
+            $("#login_div").load("/EasyMVC/Game/loadSignup");
+            });
+        });
+ 
+ $.ajax({url: "AddVisitor.",type:"POST"});//AddVistorSum
+        
+
+       // $('#show_online').mouseover(function(){ });
+        
+
+ 
  game_time=21;                        //設定遊戲秒數
   $('#player').load("/EasyMVC/Game/UserLvExp"); 
   
@@ -184,7 +198,7 @@ $(".i_m").mouseover(function(){
         });
   $("#edit").click(function(){
             $('.i_m,#start,#g_list').hide(500);
-            $("#ball_box").load("/EasyMVC/models/Edit.php");
+            $("#ball_box").load("/EasyMVC/Game/loadEdit");
         });      
   $('#logout').click(function() {
       if(confirm("Are You Sure to Logout?"))
@@ -196,8 +210,15 @@ $(".i_m").mouseover(function(){
        //alert("你按下取消");
        }
   })      
-     
-    
-        
-        
+
+    function checkdataPassword($str){
+     var checkdata = /^[A-Za-z_][A-Za-z0-9_]{7,15}$/;
+     return checkdata.test($str);
+}
+       
+       function ShowOnlinePlayers(){
+        $.ajax({url:'/EasyMVC/Game/CountOnlinePlayer',type:'POST',async: true,success:function(data){$('#show_online').html(data);}});
+        var t=setTimeout(ShowOnlinePlayers,1500);
+    };      
+        ShowOnlinePlayers();
 });
