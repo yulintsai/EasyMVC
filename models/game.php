@@ -4,16 +4,18 @@
         
         private $gameMode;
         private $score;
-        
         var $font_c;//ball color word
+        
         public function __construct(){
-            
+            Server::setConnect();
         }
         
     #================================================= 
+    
         function setGameMode($gamemode){//選擇模式
             $this->gameMode = $gamemode;
         }
+        
         function getGameMode(){
             return $this->gameMode;
         }
@@ -23,6 +25,7 @@
         function setScore($Score){//設置分數
             $this->score = $Score;
         }
+        
         function getScore(){
             return $this->score;
         }
@@ -37,19 +40,14 @@
         
 
     #=================================================    
-        function randomBall(){
-            include("CreateColorBall.php");
-            
-        }
         
-        function startGame($num_ball,$link,$u_id,$myip){//啟動遊戲
+        function startGame($num_ball,$link,$u_id){//啟動遊戲
            $this->CreateColorBall($num_ball,$link,$u_id,$myip);
         }
         
         function endGame(){
-               session_start();
-               include_once("mysql.inc.php");
-                
+               
+               $myip=$this->GetIP();
                if(!isset($_GET["score"])){
                 echo "bye";
                   }else{
@@ -57,19 +55,17 @@
                 $u_id=$_SESSION['u_id'];
                 $user_id=$_SESSION['user_id'];
                 //連接資料庫
-                include("mysql.inc.php");
-                include("GetIP.php");
                 $sql="INSERT INTO `GameLog`( `u_id`,`id`, `score`, `ip`) VALUES ('$u_id','$user_id',$score,'$myip');";//存遊戲檔案
                 $sql.="SELECT MAX(score) FROM  `GameLog` WHERE u_id ='$u_id';";//找到USER最高分是多少
                 $log="INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES ('$u_id','PlayGame','$myip')";//遊戲結束將傳入紀錄
-                $gotolog=$mysqli->query($log);
-                $update=$mysqli->multi_query($sql);
+                $gotolog=Server::$mysqli->query($log);
+                $update=Server::$mysqli->multi_query($sql);
                 
                 if ($update){
                   do
                     {
                     // Store first result set
-                    if ($result=$mysqli->store_result()) {
+                    if ($result=Server::$mysqli->store_result()) {
                       // Fetch one and one row
                       while ($row=$result->fetch_row)
                         {
@@ -79,7 +75,7 @@
                       $result->free_result();
                       }
                     }
-                  while ($mysqli->next_result());
+                  while (Server::$mysqli->next_result());
                 }
     
 }
@@ -87,10 +83,9 @@
 
         }
         
-        public function CreateColorBall($num_ball,$link,$u_id,$myip){
-            session_start();
+        public function CreateColorBall($num_ball,$link,$u_id){
+            
             include_once('GetIP.php');
-            include_once("mysql.inc.php");
         $x=0;
         do{
             
@@ -110,9 +105,6 @@
                     // code...
                     break;
                 case '2':$this->font_c=$all_color[rand(0,1)];//整人模式
-                    // code...
-                    break;
-                default: $this->font_c=$all_color[rand(0,2)];
                     // code...
                     break;
             }*/
@@ -136,7 +128,7 @@
             
             $sql="INSERT INTO `CreateBall_Log`(`u_id`,`Ball`, `Color1`, `Color2`, `Color3`, `BallColorAns`, `IP`)
             VALUES('$u_id','$num','$all_color[0]','$all_color[1]','$all_color[2]','$BallColorAns','$myip');";
-            $mysqli->query($sql);
+            Server::$mysqli->query($sql);
             unset($this->font_c);
     #==========================================================================================
             $x=$x+1;
@@ -165,5 +157,17 @@
                 return $w_b;
             }
         }   
+        
+        function GetIP(){
+         if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+            $myip = $_SERVER['HTTP_CLIENT_IP'];
+         }else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+            $myip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+         }else{
+            $myip= $_SERVER['REMOTE_ADDR'];
+         }
+         return $myip;
+      }
+        
     }
 ?>

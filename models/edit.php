@@ -1,6 +1,10 @@
 <?php
 class edit{
     
+    public function __construct(){
+            Server::setConnect();
+        }
+    
     function test_input($data) {
           $data = trim($data);
           $data = stripslashes($data);
@@ -8,13 +12,8 @@ class edit{
           return $data;
         }
     
-    // function edit(){
-    //     echo 123;
-    // }
     function edit(){
         //if(isset($_POST['signup'])){
-        session_start();
-        include("mysql.inc.php");
         $username=trim($_POST["Username"]);
         $email=$this->test_input($_POST['Email']);
         $pwd=$_POST['Password'];
@@ -34,26 +33,26 @@ class edit{
             $pwd = md5($pwd);
             $u_id=$_SESSION['u_id'];
             $FindOldpwd="SELECT pwd FROM UserData WHERE u_id='$u_id'";
-            $OldPWD=$mysqli->query($FindOldpwd);
+            $OldPWD=Server::$mysqli->query($FindOldpwd);
             $Answer= $OldPWD->fetch_row();
             if($Answer[0]!==$pwd){
                 echo "Password Error";
             }else
             
                 {
-                 $username=$mysqli->real_escape_string($username);
-                 $pwd=$mysqli->real_escape_string($pwd);
-                 $email=$mysqli->real_escape_string($email);
+                 $username=Server::$mysqli->real_escape_string($username);
+                 $pwd=Server::$mysqli->real_escape_string($pwd);
+                 $email=Server::$mysqli->real_escape_string($email);
                  
                  $edi_sql="UPDATE UserData SET id='$username',pwd='$pwd',email='$email' where u_id='$u_id'";
-                 $goedit=$mysqli->query($edi_sql);
+                 $goedit=Server::$mysqli->query($edi_sql);
                  if($goedit){
                      $_SESSION['user_id']=$username;
                      echo "<script> alert('Update Data Success');location.href='/EasyMVC'</script>";
                     // header("Location: logout.php");
                     if($_POST['DeleteAllScoreData']=="delete"){     //check delete checkbox
                         $Dsql="DELETE FROM GameLog WHERE u_id = '$u_id'";
-                        if($mysqli->query($Dsql)){
+                        if(Server::$mysqli->query($Dsql)){
                             echo "<script>alert('PLEASE LOGIN AGAIN');location.href='/EasyMVC';</script>";
                         }
                             else{
@@ -70,6 +69,6 @@ class edit{
         }
             
     }
-        //}
+    
 }
 ?>

@@ -50,7 +50,8 @@ class GameController extends Controller {
     
     function CountOnlinePlayer(){
         $playerC = $this->model("player");
-        $playerC->CountOnlinePlayer();
+        $min=5;                         //設定間隔時間
+        $playerC->CountOnlinePlayer($min);
     } //計算線上玩家
     
     function UserLvExp(){
@@ -85,7 +86,7 @@ class GameController extends Controller {
            echo 'Error';
         }else{
             $yu=$this->model("game");
-            $yu->startGame($_GET["lv"],$link,$u_id,$myip);    
+            $yu->startGame($_GET["lv"],$link,$u_id);    
         }
     }        //啟動遊戲動作
     
@@ -94,6 +95,15 @@ class GameController extends Controller {
         $end->endGame();
     }          //遊戲結束時動作
     
-    
+    function GetIP(){
+         if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+            $myip = $_SERVER['HTTP_CLIENT_IP'];
+         }else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+            $myip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+         }else{
+            $myip= $_SERVER['REMOTE_ADDR'];
+         }
+         return $myip;
+      }
 }
 ?>

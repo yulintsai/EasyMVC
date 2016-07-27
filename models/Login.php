@@ -1,7 +1,21 @@
 
 <?php
 class Login{
-   
+      function __construct(){
+            Server::setConnect();
+        }
+      
+      function GetIP(){
+         if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+            $myip = $_SERVER['HTTP_CLIENT_IP'];
+         }else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+            $myip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+         }else{
+            $myip= $_SERVER['REMOTE_ADDR'];
+         }
+         return $myip;
+      }
+      
       function CheckLogin(){ 
       
       // 檢查是否輸入使用者名稱和密碼
@@ -21,16 +35,15 @@ class Login{
       
          // 建立MySQL的資料庫連接 
          include("GetIP.php");
-         include("mysql.inc.php");
          //避免SQL Injection
-         $account=$mysqli->real_escape_string($account);
-         $password=md5($mysqli->real_escape_string($password));
+         $account=Server::$mysqli->real_escape_string($account);
+         $password=md5(Server::$mysqli->real_escape_string($password));
          
          // 建立SQL指令字串
          $sql = "SELECT * FROM UserData WHERE pwd='";
          $sql.= $password."' AND account='".$account."'";
          // 執行SQL查詢
-         $result = $mysqli->query($sql);
+         $result = Server::$mysqli->query($sql);
          $total_records = $result->num_rows;
         
          // 是否有查詢到使用者記錄
@@ -40,17 +53,18 @@ class Login{
             
             //並給予cookie轉址到/EasyMVC.php
             $sql="SELECT u_id,id FROM UserData WHERE account='$account'";//抓取使用者名稱
-            $username=$mysqli->query($sql); 
+            $username=Server::$mysqli->query($sql); 
             $user_ID=$username->fetch_assoc();
             $user_id= $user_ID['id'];
             $u_id=$user_ID['u_id'];
             //更新使用者登入次數
             $Visit="UPDATE UserData SET visit=visit+1 account='$account'";
-            $UpdateVisit=$mysqli->query($online);
+            $UpdateVisit=Server::$mysqli->query($online);
             if($username){
+            $myip=$this->GetIP();
             $log="INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES ('$u_id','Login','$myip')";
-            $mysqli->query($log);}
-            session_start();
+            Server::$mysqli->query($log);
+            }
             $_SESSION['status']=true;
             $_SESSION['u_id']=$u_id;
             $_SESSION['user_id']=$user_id;
@@ -66,5 +80,6 @@ class Login{
       }
       
       }
+      
 }
 ?>

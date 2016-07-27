@@ -1,8 +1,23 @@
 <?php
 class load{
     
+    public function __construct(){
+            Server::setConnect();
+        }
+    
+    function GetIP(){
+        if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+            $myip = $_SERVER['HTTP_CLIENT_IP'];
+         }else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+            $myip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+         }else{
+            $myip= $_SERVER['REMOTE_ADDR'];
+         }
+         return $myip;
+    }
+    
     function loadSign(){
-    include_once("GetIP.php");
+    $myip=$this->GetIP();
     echo "
     <form method='POST' action='/EasyMVC/Game/GoSignup'>
            <div id='signup'>
@@ -28,12 +43,10 @@ class load{
 } //載入註冊畫面
     
     function loadEdit(){
-        include('mysql.inc.php');
-        include_once('GetIP.php');
-        session_start();
+        $myip=$this->GetIP();
         $u_id=$_SESSION['u_id'];
         $edit1_sql='select account,email from UserData where u_id='.$u_id;
-        $edit_result=$mysqli->query($edit1_sql);
+        $edit_result=Server::$mysqli->query($edit1_sql);
         if($edit_result){
         $row=$edit_result->fetch_row();
         //echo var_dump($row);
@@ -60,9 +73,9 @@ class load{
     }
     
     function addVisitor(){
-        include_once("mysql.inc.php");
+        
         $sql="UPDATE information SET visit_num=visit_num+1";//games total
-        $visit=$mysqli->query($sql);
+        $visit=Server::$mysqli->query($sql);
         if($visit){
         //echo "success +1 visit";
         }else{
