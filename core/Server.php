@@ -1,5 +1,5 @@
 <?php
-    #server負責進行資料庫連接，將連接資料建給靜態變數$worldO 
+    #server負責進行資料庫連接，將連接資料建給靜態變數$mysqli
     class Server {
         
         public static $mysqli;

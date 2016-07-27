@@ -3,6 +3,7 @@ class load{
     
     public function __construct(){
             Server::setConnect();
+            IP::GetIP();
         }
     
     function GetIP(){
