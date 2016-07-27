@@ -46,14 +46,8 @@ class load{
         $myip=$this->GetIP();
         $u_id=$_SESSION['u_id'];
         $edit1_sql='select account,email from UserData where u_id='.$u_id;
-        $edit_result=Server::$mysqli->query($edit1_sql);
-        if($edit_result){
-        $row=$edit_result->fetch_row();
-        //echo var_dump($row);
-        }
-        else{
-            echo '<h1>Error</h1>';
-        }
+        $row=Server::$mysqli->query($edit1_sql)->fetch_row();
+        
         
         echo "<form id='go_edit_form' method='post' action='/EasyMVC/Game/GoEdit'> <div>
 <input class='C_input' type='text' id='Username'name='Username' placeholder='Username' autocomplete='on' value='".$_SESSION['user_id']."'
@@ -75,8 +69,8 @@ class load{
     function addVisitor(){
         
         $sql="UPDATE information SET visit_num=visit_num+1";//games total
-        $visit=Server::$mysqli->query($sql);
-        if($visit){
+
+        if(Server::$mysqli->query($sql)){
         //echo "success +1 visit";
         }else{
             echo "error";

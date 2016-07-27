@@ -41,27 +41,21 @@
 
     #=================================================    
         
-        function startGame($num_ball,$link,$u_id){//啟動遊戲
-           $this->CreateColorBall($num_ball,$link,$u_id,$myip);
-        }
+        // function startGame($num_ball,$u_id){//啟動遊戲
+        //   $this->CreateColorBall($num_ball,$link,$u_id);
+        // }
         
-        function endGame(){
+        function insertScore(){
                
-               $myip=$this->GetIP();
-               if(!isset($_GET["score"])){
-                echo "bye";
-                  }else{
+                $myip=$this->GetIP();
                 $score=$_GET["score"];
                 $u_id=$_SESSION['u_id'];
                 $user_id=$_SESSION['user_id'];
                 //連接資料庫
                 $sql="INSERT INTO `GameLog`( `u_id`,`id`, `score`, `ip`) VALUES ('$u_id','$user_id',$score,'$myip');";//存遊戲檔案
                 $sql.="SELECT MAX(score) FROM  `GameLog` WHERE u_id ='$u_id';";//找到USER最高分是多少
-                $log="INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES ('$u_id','PlayGame','$myip')";//遊戲結束將傳入紀錄
-                $gotolog=Server::$mysqli->query($log);
-                $update=Server::$mysqli->multi_query($sql);
                 
-                if ($update){
+                if (Server::$mysqli->multi_query($sql)){
                   do
                     {
                     // Store first result set
@@ -77,15 +71,19 @@
                     }
                   while (Server::$mysqli->next_result());
                 }
+                
+                $log="INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES ('$u_id','PlayGame','$myip')";
+                Server::$mysqli->query($log);//存分數
+                
     
-}
+
 
 
         }
         
-        public function CreateColorBall($num_ball,$link,$u_id){
+        public function CreateColorBall($num_ball,$u_id){
             
-            include_once('GetIP.php');
+        $myip=$this->GetIP();
         $x=0;
         do{
             

@@ -29,86 +29,82 @@ class player{
             AND (
              '$time2'
             )";//顯示在線人數sql語法
-        $OnlineCount=Server::$mysqli->query($sql);
-        if($OnlineCount){
-        $ans=$OnlineCount->fetch_row();
-        //echo var_dump($ans);
-        echo "Online Players<br>".$ans[0];}//在線人數
-        else{
-            echo "Error";
-        }
+
+        $ans=Server::$mysqli->query($sql)->fetch_row();
+        echo "Online Players<br>".$ans[0];//在線人數
     }//計算線上人數
     
-    function GlobalRank(){
-          
+    function showGlobalRank(){
           $rank_sql="SELECT distinct id,score FROM GameLog order by score desc ,time asc limit 5";
-          $rank_score=Server::$mysqli->query($rank_sql);
-          $result_rankscore=$rank_score->fetch_all();
+          $rank_score=Server::$mysqli->query($rank_sql)->fetch_all();
           echo "<table border='1px'width='100%' height='100%'> <td>Rank</td><td>ID</td><td>Score</td>";
-        foreach ($result_rankscore as $key=>$value) {
+        foreach ($rank_score as $key=>$value) {
            echo "<tr><td>".($key+1)."</td><td>".$value[0]."</td><td>".$value[1]."</td></tr>";
            }
            echo "</table>";
-    }//全部玩家排行
+    }//查看全部玩家排行
+    
+    function showUserLogScore(){
+            $u_id=$_SESSION['u_id'];
+            $myscore_sql="SELECT distinct score FROM GameLog where u_id='$u_id' order by score desc limit 6";
+            $result=Server::$mysqli->query($myscore_sql)->fetch_all();
+            echo "<table border='1px'width='100%' height='100%'> <td>NO.</td><td>Score</td>";
+            foreach($result as $key=>$value){
+               echo "<tr><td>".($key+1)."</td><td>".$result[$key][0]."</td></tr>";
+            }
+            echo "</table>";
+          
+        }//查看分數紀錄
     
     function test_input($data) {
       $data = trim($data);
       $data = stripslashes($data);
       $data = htmlspecialchars($data);
-    //   $this->GoSignup()
+      $data = Server::$mysqli->real_escape_string($data);
       return $data;
     } //檢查Input
     
     function GoSignup(){
         $email=$this->test_input($_POST['Email']);
         $msg1="<script> alert('Please input Your ";
-        $msg2="');location.href='/EasyMVC' </script>";
+        $msg2="');location.href='/EasyMVC'</script>";
 
     if(isset($_POST['signup'])){
         $check=0;
-    if (empty($_POST["Account"]) ){
-            $idErr="Name is required";
-            echo $idErr;
-            echo $msg1."Name".$msg2;
-     }else{
-            $account=$this->test_input($_POST["Account"]) ;
-            $username=trim($_POST["Username"]);
-            if (!preg_match("/^[a-zA-Z ]*$/",$account)) {
-            $nameErr = "Only letters and white space allowed"; 
-            $check++;}
-        }
-    if(empty($_POST['Password'])or empty($_POST['RePassword']) ){
-            echo $msg1."password".$msg2;
-            $pwdErr="Password is Empty";
-    }else{$check++;}
+        
+        if (($_POST["Account"])=="" ){
+                echo $msg1."Name".$msg2;
+         }else{
+                $account=$this->test_input($_POST["Account"]) ;
+                $username=trim($_POST["Username"]);
+                
+                if (!preg_match("/^[a-zA-Z ]*$/",$account)) {
+                    $nameErr = "Only letters and white space allowed"; 
+                    $check++;}
+            }
             
-    if($_POST['Password']!=$_POST['RePassword']){
-            echo $msg1."password again".$msg2;
-            $pwdErr="Password is NOT the Same";
-    }else{$check++;}
+        if((($_POST['Password'])||($_POST['RePassword']))==""){
+                echo $msg1."password".$msg2;
+            }else{$check++;}
+                
+        if($_POST['Password']!=$_POST['RePassword']){
+                echo $msg1."password again".$msg2;
+            }else{$check++;}
+                
+        if($email==""){
+               echo $msg1."E-mail".$msg2;}
+         else{
+              $pw=$this->test_input($_POST['Password']);
+              $pw = md5($_POST["Password"]);
+              $check++; 
+            }
             
-    if(empty($email) ){
-           $emailErr="E-mail is Empty";
-           echo $msg1."E-mail".$msg2;
-        }else{
-          $pw=$this->test_input($_POST['Password']);
-          $pw = md5($_POST["Password"]);
-          $check++; 
-        }
-          
-          
-    if($check>2){
-          
-          $ip=$_POST['u_ip'];
-          $account=Server::$mysqli->real_escape_string($account);
-          $username=Server::$mysqli->real_escape_string($username);
-          $pw=Server::$mysqli->real_escape_string($pw);
-          $email=Server::$mysqli->real_escape_string($email);
-          
-          //check account 重複
+        $ip=$_POST['u_ip'];  
+        
+        if($check>2){
+         //check account 重複
         $sql = "SELECT account FROM UserData WHERE account='$account'";
-        $CheckSameAc=Server::$mysqli->query($sql);
-        $result= $CheckSameAc->fetch_row();
+        $result= Server::$mysqli->query($sql)->fetch_row();
              
           if($account==$result[0]){
               echo 'The account is been use!';
@@ -117,84 +113,50 @@ class player{
         
             $sql="INSERT INTO UserData(account,id,pwd,email,ip)values('$account','$username','$pw','$email','$ip')";
             
-          if(Server::$mysqli->query($sql))
-                {
-                        echo 'OK!';
-                        echo '<meta http-equiv=REFRESH CONTENT=2;url=/EasyMVC>';
+              if(Server::$mysqli->query($sql))
+                    {
+                            echo 'OK!';
+                            echo '<meta http-equiv=REFRESH CONTENT=2;url=/EasyMVC>';
+                    }
+                    else
+                    {
+                            echo 'ERROR!';
+                            echo '<meta http-equiv=REFRESH CONTENT=2;url=/EasyMVC>';
+                    }
                 }
-                else
-                {
-                        echo 'ERROR!';
-                        echo '<meta http-equiv=REFRESH CONTENT=2;url=/EasyMVC>';
-                }
-              }
-           Server::$mysqli->close();    
-          }   else{
-              echo "HI";
-          }
-    }
-
-else
-{           //非註冊人禁止進入
+            }else{
+                echo "NO Check all";
+            }
+            
+        }else{//非註冊人禁止進入
         header("Location: /EasyMVC/");
-        
-}
+      }   
     }//註冊帳號
     
     function UpdateStatus(){
+        
         $myip=$this->GetIP();
-        if($_GET['status']){
         $status=$_GET['status'];
         $u_id=$_SESSION['u_id'];
         $updateStatue="INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES ('$u_id','$status','$myip')";
         Server::$mysqli->query($updateStatue);
-        }else{
-            echo "Error";
-        }
-    }//更新狀態
-    
-    function UserLogScore(){
         
-        $u_id=$_SESSION['u_id'];
-        $myscore_sql="SELECT distinct score FROM GameLog where u_id='$u_id' order by score desc limit 6";
-        $mysc=Server::$mysqli->query($myscore_sql);
-         "HI";
-        if($mysc){
-            $result=$mysc->fetch_all();
-            echo "<table border='1px'width='100%' height='100%'> <td>NO.</td><td>Score</td>";
-            foreach($result as $key=>$value){
-               echo "<tr><td>".($key+1)."</td><td>".$result[$key][0]."</td></tr>";
-            }
-            echo "</table>";
-        }else{
-            echo "error";
-        }
-          
-        }//查分數紀錄
+    }//更新狀態
         
     function UserLvExp(){
-        
-        $u_id=$_SESSION['u_id'];
-        $sql="SELECT SUM(score) FROM `GameLog` WHERE u_id='$u_id'";//players total
-        $score=Server::$mysqli->query($sql);
-        if($score){
-            $PlayerScore=$score->fetch_assoc();
-            $p_score=$PlayerScore['SUM(score)'];
-            //echo "Total Exp = ".$p_score."<br>";//總分
-            $lv=(ceil($p_score/50)+1);
-            //echo "Lv".$lv."<br>";玩家等級
-            $exp=(($p_score%50)*2);
-            //echo "Exp".$exp."%";玩家經驗值
+            $user_id=strtoupper($_SESSION['user_id']);
+            $u_id=$_SESSION['u_id'];
+            $sql="SELECT SUM(score) FROM `GameLog` WHERE u_id='$u_id'";//players total
+            $PlayerScore=Server::$mysqli->query($sql)->fetch_assoc();
+            $p_score=$PlayerScore['SUM(score)'];//總分
+            $lv=(ceil($p_score/50)+1);//玩家等級
+            $exp=(($p_score%50)*2);//玩家經驗值
             
+            echo "<div id='lv'>Lv.".$lv."</div>
+                 <div id='user'>".$user_id."</div>
+                 <div class='progress progress-striped'><div class='progress-bar progress-bar-success' role='progressbar' 
+              aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' id='exp'style='width:$exp%'"."title=".$p_score."/".($lv*50).">".$exp."%</div></div>";
             
-                   echo"<div id='lv'>Lv.".$lv."</div>
-                        <div id='user'>".(strtoupper($_SESSION['user_id']))."</div>
-                        <div class='progress progress-striped'><div class='progress-bar progress-bar-success' role='progressbar' 
-                  aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' id='exp'style='width:$exp%'"."title=".$p_score."/".($lv*50).">".(($p_score%50)*2)."%</div></div>";
-            
-            }else{
-                echo "error";
-            }
     }//計算玩家等級經驗值
     
 }

@@ -67,14 +67,23 @@ class GameController extends Controller {
     
     function GlobalRank(){
         $rank = $this->model("player");
-        $rank->GlobalRank();
+        $rank->showGlobalRank();
     }        //查詢全部玩家排行
     
-    
-   /*==========================================================*/   
+   /*==========================================================*/  
+   
     function UpdateStatus(){
-        $update = $this->model("player");
-        $update->UpdateStatus();
+        
+        if($_GET['status']){
+            
+            $update = $this->model("player");
+            $update->UpdateStatus();
+            
+        }else{
+            
+            echo " UpdateStatus Error";
+            
+        }
     }     //更新使用者狀態
     
     function startGame(){
@@ -85,25 +94,21 @@ class GameController extends Controller {
         if(!isset($_GET['lv'])){
            echo 'Error';
         }else{
-            $yu=$this->model("game");
-            $yu->startGame($_GET["lv"],$link,$u_id);    
+            $start=$this->model("game");
+            $start->CreateColorBall($_GET["lv"],$u_id);    
         }
     }        //啟動遊戲動作
     
     function endGame(){
+        
+        if(!isset($_GET["score"])){
+                echo "Error";
+                  }else{
         $end = $this->model("game");
-        $end->endGame();
+        $end->insertScore();
+        
+        }
     }          //遊戲結束時動作
-    
-    function GetIP(){
-         if(!empty($_SERVER['HTTP_CLIENT_IP'])){
-            $myip = $_SERVER['HTTP_CLIENT_IP'];
-         }else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
-            $myip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-         }else{
-            $myip= $_SERVER['REMOTE_ADDR'];
-         }
-         return $myip;
-      }
+
 }
 ?>

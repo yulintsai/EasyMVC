@@ -37,9 +37,8 @@ class edit{
             $Answer= $OldPWD->fetch_row();
             if($Answer[0]!==$pwd){
                 echo "Password Error";
-            }else
-            
-                {
+            }
+            else {
                  $username=Server::$mysqli->real_escape_string($username);
                  $pwd=Server::$mysqli->real_escape_string($pwd);
                  $email=Server::$mysqli->real_escape_string($email);
@@ -66,6 +65,8 @@ class edit{
                  }
                 
             }
+            
+               
         }
             
     }
