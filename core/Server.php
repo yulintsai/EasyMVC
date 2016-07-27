@@ -2,7 +2,7 @@
     #server負責進行資料庫連接，將連接資料建給靜態變數$mysqli
     class Server {
         
-        public static $mysqli;
+        public static $mysqli,$myip;
         
         public static function setConnect() {
             $db_server="localhost";
@@ -18,5 +18,20 @@
             $mysqli->set_charset("utf8");
             Server::$mysqli=$mysqli;
         }
+        
+        public static function GetIP(){
+            if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+                $myip = $_SERVER['HTTP_CLIENT_IP'];
+             }else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+                $myip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+             }else{
+                $myip= $_SERVER['REMOTE_ADDR'];
+             }
+             Server::$myip = $myip;
+        }
+        
+        
+        
+        
     }
-    ?>
+?>

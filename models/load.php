@@ -3,22 +3,10 @@ class load{
     
     public function __construct(){
             Server::setConnect();
-            IP::GetIP();
+            Server::GetIP();
         }
     
-    function GetIP(){
-        if(!empty($_SERVER['HTTP_CLIENT_IP'])){
-            $myip = $_SERVER['HTTP_CLIENT_IP'];
-         }else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
-            $myip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-         }else{
-            $myip= $_SERVER['REMOTE_ADDR'];
-         }
-         return $myip;
-    }
-    
     function loadSign(){
-    $myip=$this->GetIP();
     echo "
     <form method='POST' action='/EasyMVC/Game/GoSignup'>
            <div id='signup'>
@@ -37,14 +25,13 @@ class load{
             margin-top: 2px;
             margin-bottom: 2px;
             background-image: url('https://lab-rain123473.c9users.io/project/img/red.jpg ');'></a>
-          <input type='hidden' name='u_ip' value='$myip'/>
+          <input type='hidden' name='u_ip' value='".Server::$myip."'/>
           <input type='submit' id='go_signup' name='signup' value='Sign Up' />
         </div>
     </form>";
 } //載入註冊畫面
     
     function loadEdit(){
-        $myip=$this->GetIP();
         $u_id=$_SESSION['u_id'];
         $edit1_sql='select account,email from UserData where u_id='.$u_id;
         $row=Server::$mysqli->query($edit1_sql)->fetch_row();
@@ -62,7 +49,7 @@ class load{
      <a href='index.php'><input type='button' value='back'/></a>
      <input type='submit' id='go_edit_btn' name='go_edit' value='Submit' /></div>
       
-      <input type='hidden' id='u_ip'name='u_ip' value='$myip'/><br/>
+      <input type='hidden' id='u_ip'name='u_ip' value='".Server::$myip."'/><br/>
       </div>
     </form>";
     }

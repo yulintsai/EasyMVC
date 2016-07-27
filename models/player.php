@@ -2,19 +2,9 @@
 class player{
     
     function __construct(){
-         Server::setConnect();
+             Server::setConnect();
+             Server::GetIP();
     }
-    
-    function GetIP(){
-         if(!empty($_SERVER['HTTP_CLIENT_IP'])){
-            $myip = $_SERVER['HTTP_CLIENT_IP'];
-         }else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
-            $myip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-         }else{
-            $myip= $_SERVER['REMOTE_ADDR'];
-         }
-         return $myip;
-      }
       
     function CountOnlinePlayer($min){
         $d=strtotime("-".$min."min");//以五分鐘為計算計算在線數
@@ -135,10 +125,9 @@ class player{
     
     function UpdateStatus(){
         
-        $myip=$this->GetIP();
         $status=$_GET['status'];
         $u_id=$_SESSION['u_id'];
-        $updateStatue="INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES ('$u_id','$status','$myip')";
+        $updateStatue="INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES ('$u_id','$status','".Server::$myip."')";
         Server::$mysqli->query($updateStatue);
         
     }//更新狀態
