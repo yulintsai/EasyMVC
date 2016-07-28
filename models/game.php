@@ -63,7 +63,7 @@
                       // Fetch one and one row
                       while ($row=$result->fetch_row)
                         {
-                          echo "<h1>success update your score :".$score." <br>your best score is ".$row[0]."<br></h1>";
+                          return "<h1>success update your score :".$score." <br>your best score is ".$row[0]."<br></h1>";
                         }
                       // Free result set
                       $result->free_result();
@@ -81,11 +81,8 @@
 
         }
         
-        public function CreateColorBall($num_ball,$u_id){
+        public function CreateColorBall($u_id){
 
-        $x=0;
-        do{
-            
             $ball= array("color","rd"); //宣告球的資訊陣列
             $bc=&$ball['color']; //$bc為ball陣列key值為color的變數
             $bc = array("BLACK","WHITE","GRAY","RED","PINK","YELLOW","GREEN","BLUE","ORANGE","PURPLE");  //將球的顏色放入ball陣列key值為color的中
@@ -111,25 +108,25 @@
             
             $ans=($all_color[2]==$this->font_c)?('2'):('-2');
             ($ans>0)?($BallColorAns='True'):($BallColorAns='False');
+            
+            
+    #=========================================================================================        
+            
+            $sql="INSERT INTO `CreateBall_Log`(`u_id`,`Ball`, `Color1`, `Color2`, `Color3`, `BallColorAns`, `IP`)
+            VALUES('$u_id','$num','$all_color[0]','$all_color[1]','$all_color[2]','$BallColorAns','".Server::$myip."');";
+            Server::$mysqli->query($sql);
+    #==========================================================================================
             //產生球
             //並將配色分配到style內
-            echo "<button class='ball' id='$num' name='$ans'
+            
+            return "<button class='ball' id='$num' name='$ans'
                                 style='
                                 border:$all_color[0] 15px solid;
                                 color: $all_color[1];
                                 background-color:$all_color[2];'
                                 ;>
                                 $this->font_c</button>";
-                                
-    #=========================================================================================        
-            
-            $sql="INSERT INTO `CreateBall_Log`(`u_id`,`Ball`, `Color1`, `Color2`, `Color3`, `BallColorAns`, `IP`)
-            VALUES('$u_id','$num','$all_color[0]','$all_color[1]','$all_color[2]','$BallColorAns','".Server::$myip."');";
-            Server::$mysqli->query($sql);
-            unset($this->font_c);
-    #==========================================================================================
-            $x=$x+1;
-        }while($x<$num_ball);
+            unset($this->font_c);                    
     }
         
         private function checkW_b($w_b,$all_color){

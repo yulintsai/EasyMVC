@@ -1,48 +1,29 @@
 <?php
-class edit{
+class edit extends dataFilter{
     
     public function __construct(){
             Server::setConnect();
         }
     
-    function test_input($data) {
-          $data = trim($data);
-          $data = stripslashes($data);
-          $data = htmlspecialchars($data);
-          return $data;
-        }
-    
     function edit(){
         //if(isset($_POST['signup'])){
-        $username=trim($_POST["Username"]);
+        $username=$this->test_input($_POST["Username"]);
         $email=$this->test_input($_POST['Email']);
-        $pwd=$_POST['Password'];
-        if(empty($pwd))
-        echo 'Password empty';
-        if(empty($username))
-        echo 'UserName empty';
-        if(empty($email))
-        echo 'E-mail empty';
-        if($pwd!==$_POST['RePassword']){
-        echo 'Password Not The Same';}
-        else{
-             $ip=$_POST['u_ip'];
-             $u_id=$_SESSION['u_id'];
+        $pwd=$this->test_input($_POST['Password']);
+       
+        $ip=$_POST['u_ip'];
+        $u_id=$_SESSION['u_id'];
         //檢查舊密碼是否輸入正確
-            $pwd = $this->test_input($pwd);
-            $pwd = md5($pwd);
-            $u_id=$_SESSION['u_id'];
-            $FindOldpwd="SELECT pwd FROM UserData WHERE u_id='$u_id'";
-            $OldPWD=Server::$mysqli->query($FindOldpwd);
-            $Answer= $OldPWD->fetch_row();
+        $pwd = md5($pwd);
+        $u_id=$_SESSION['u_id'];
+        $FindOldpwd="SELECT pwd FROM UserData WHERE u_id='$u_id'";
+        $OldPWD=Server::$mysqli->query($FindOldpwd);
+        $Answer= $OldPWD->fetch_row();
+        
             if($Answer[0]!==$pwd){
                 echo "Password Error";
             }
             else {
-                 $username=Server::$mysqli->real_escape_string($username);
-                 $pwd=Server::$mysqli->real_escape_string($pwd);
-                 $email=Server::$mysqli->real_escape_string($email);
-                 
                  $edi_sql="UPDATE UserData SET id='$username',pwd='$pwd',email='$email' where u_id='$u_id'";
                  $goedit=Server::$mysqli->query($edi_sql);
                  if($goedit){
@@ -67,7 +48,7 @@ class edit{
             }
             
                
-        }
+        
             
     }
     
