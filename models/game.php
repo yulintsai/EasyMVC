@@ -8,6 +8,7 @@
         
         public function __construct(){
             Server::setConnect();
+            Server::pdoConnect();
             Server::GetIP();
         }
         
@@ -52,7 +53,7 @@
                 $u_id=$_SESSION['u_id'];
                 $user_id=$_SESSION['user_id'];
                 //連接資料庫
-                $sql="INSERT INTO `GameLog`( `u_id`,`id`, `score`, `ip`) VALUES ('$u_id','$user_id',$score,'".Server::$myip."');";//存遊戲檔案
+                $sql="INSERT INTO `GameLog`( `u_id`,`id`, `score`, `ip`) VALUES ('$u_id','$user_id','$score','".Server::$myip."');";//存遊戲檔案
                 $sql.="SELECT MAX(score) FROM  `GameLog` WHERE u_id ='$u_id';";//找到USER最高分是多少
                 
                 if (Server::$mysqli->multi_query($sql)){
@@ -114,7 +115,7 @@
             
             $sql="INSERT INTO `CreateBall_Log`(`u_id`,`Ball`, `Color1`, `Color2`, `Color3`, `BallColorAns`, `IP`)
             VALUES('$u_id','$num','$all_color[0]','$all_color[1]','$all_color[2]','$BallColorAns','".Server::$myip."');";
-            Server::$mysqli->query($sql);
+            Server::$db->query($sql);
     #==========================================================================================
             //產生球
             //並將配色分配到style內

@@ -21,27 +21,26 @@ class edit extends dataFilter{
         $Answer= $OldPWD->fetch_row();
         
         if($Answer[0]!==$pwd){
-            echo "Password Error";
+            return "Password Error";
         }
         else {
              $edi_sql="UPDATE UserData SET id='$username',pwd='$pwd',email='$email' where u_id='$u_id'";
              $goedit=Server::$mysqli->query($edi_sql);
              if($goedit){
                  $_SESSION['user_id']=$username;
-                 echo "<script> alert('Update Data Success');location.href='/EasyMVC'</script>";
-                // header("Location: logout.php");
+                 return "<script> alert('Update Data Success');location.href='/EasyMVC'</script>";
                 if($_POST['DeleteAllScoreData']=="delete"){     //check delete checkbox
                     $Dsql="DELETE FROM GameLog WHERE u_id = '$u_id'";
                     if(Server::$mysqli->query($Dsql)){
-                        echo "<script>alert('PLEASE LOGIN AGAIN');location.href='/EasyMVC';</script>";
+                        return "<script>alert('PLEASE LOGIN AGAIN');location.href='/EasyMVC';</script>";
                     }
                         else{
-                         echo "Error";
+                         return "Error";
                     }
                     
                 }
              }else{
-                 echo "<script> alert('Error Input');location.href='/EasyMVC'</script>";
+                 return "<script> alert('Error Input');location.href='/EasyMVC'</script>";
                  
              }
             

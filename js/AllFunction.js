@@ -208,7 +208,7 @@ $(document).ready(function(){
       $('#logout').click(function() { //登出事件
            if(confirm("Are You Sure to Logout?"))
             {  
-             document.location.href="/EasyMVC/models/Logout.php";
+             document.location.href="/EasyMVC/Game/Logout";
             }
             else
             {

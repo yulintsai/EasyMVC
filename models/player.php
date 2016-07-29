@@ -11,9 +11,9 @@
             $d=strtotime("-".$min."min");//以五分鐘為計算計算在線數
             $time1 = date("Y-m-d H:i:s",$d);
             $time2 = date("Y-m-d H:i:s");//現在時間
-            $sql="SELECT COUNT(DISTINCT u_id)
+            $sql="SELECT COUNT(DISTINCT `u_id`)
                 FROM  `UserLoginTime` 
-                WHERE Time
+                WHERE `Time`
                 BETWEEN (
                  '$time1'
                 )
@@ -27,7 +27,7 @@
         
         function showGlobalRank(){
             
-              $rank_sql="SELECT distinct id,score FROM GameLog order by score desc ,time asc limit 5";
+              $rank_sql="SELECT DISTINCT `id`,`score` FROM `GameLog` ORDER BY `score` DESC ,`time` ASC LIMIT 5";
               $rank_score=Server::$mysqli->query($rank_sql)->fetch_all();
               return $rank_score;
             
@@ -36,7 +36,7 @@
         function showUserLogScore(){
             
                 $u_id=$_SESSION['u_id'];
-                $myscore_sql="SELECT distinct score FROM GameLog where u_id='$u_id' order by score desc limit 6";
+                $myscore_sql="SELECT DISTINCT `score` FROM `GameLog` WHERE `u_id`='$u_id' ORDER BY `score` DESC LIMIT 6";
                 $result=Server::$mysqli->query($myscore_sql)->fetch_all();
                 return $result;
             }//查看分數紀錄
@@ -93,14 +93,14 @@
                       $ip=$_POST['u_ip'];
                       $username=$this->test_input($_POST['Username']);
                        //check account 重複
-                      $sql = "SELECT account FROM UserData WHERE account='$account'";
+                      $sql = "SELECT `account` FROM `UserData` WHERE `account`='$account'";
                       $result= Server::$mysqli->query($sql)->fetch_row();
                      
                       if($account==$result[0]){
                           return  $msg1.'The account is been use!'.$msg2; ;
                       }else{
                     
-                        $sql="INSERT INTO UserData(account,id,pwd,email,ip)values('$account','$username','$pw','$email','$ip')";
+                        $sql="INSERT INTO `UserData`(`account`,`id`,`pwd`,`email`,`ip`)VALUES('$account','$username','$pw','$email','$ip')";
                         
                           if(Server::$mysqli->query($sql))
                                 {
@@ -139,7 +139,8 @@
                 $sql="SELECT SUM(score) FROM `GameLog` WHERE u_id='$u_id'";//players total
                 $PlayerScore=Server::$mysqli->query($sql)->fetch_assoc();
                 $p_score=$PlayerScore['SUM(score)'];//總分
-                return $p_score;
+                $result=array("score"=>$p_score,"user_id"=>$user_id);
+                return $result;
                 
         }//計算玩家等級經驗值
         
@@ -155,6 +156,8 @@
             $row=Server::$mysqli->query($edit1_sql)->fetch_row();
             return $row[1];
         }//找使用者帳號跟信箱
+        
+        
         
         function __destruct(){
             Server::closeConnect();

@@ -1,4 +1,5 @@
 <?php
+
 class GameController extends Controller {
     
     function index() {
@@ -36,6 +37,7 @@ class GameController extends Controller {
         $gotosn = $this->model("player");
         $ans=$gotosn->GoSignup();
         $this->view("showOnedata",$ans);
+        header("Location:/EasyMVC/");
     }    //進行註冊
     
     function loadEdit(){
@@ -60,9 +62,12 @@ class GameController extends Controller {
         $ErrorMsg= 'Password Not The Same';}
         else{
         $edit=$this->model("edit");
-        $edit->edit();
+        $msg=$edit->edit();
+        $this->view("alertMsg",$msg);
+        header("Refresh:0;/EasyMVC/");
         }
-        $this->view("showOnedata",$ErrorMsg);
+        $this->view("alertMsg",$ErrorMsg);
+        header("Refresh:0;/EasyMVC/");
         }
     }      //進行編輯
     
@@ -88,10 +93,10 @@ class GameController extends Controller {
     
     function UserLvExp(){
         $LvExp = $this->model("player");
-        $p_score=$LvExp->UserLvExp();
-        $lv=(ceil($p_score/50)+1);//玩家等級
-        $exp=(($p_score%50)*2);//玩家經驗值
-        $data=array($lv,$exp,$p_score,$user_id);
+        $result=$LvExp->UserLvExp();
+        $lv=(ceil($result["score"]/50)+1);//玩家等級
+        $exp=(($result["score"]%50)*2);//玩家經驗值
+        $data=array($lv,$exp,$result["score"],$result["user_id"]);
         $this->view("showLvExp",$data);
     }         //玩家經驗值資料
     
@@ -177,6 +182,12 @@ class GameController extends Controller {
                 $this->view("showOnedata", $ans);
         }
     }          //遊戲結束時動作
+    
+    function logout(){
+            $logout = $this->model("Login");
+            $logout->logout();
+    }
+        
 
 }
 ?>

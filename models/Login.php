@@ -3,7 +3,7 @@
 class Login {
    
       function __construct(){
-            Server::setConnect();
+            // Server::setConnect();
             Server::GetIP();
             Server::pdoConnect();
         }
@@ -15,28 +15,36 @@ class Login {
          return "<script>alert('NO input!');location.href='/EasyMVC/'</script>t";
          }else{
             
-                  //避免SQL Injection
-                  $account=Server::$mysqli->real_escape_string($account);
-                  $password=md5(Server::$mysqli->real_escape_string($password));
+                  $password=md5($password);
                   
                   // 進行帳密確認
                   $sql = "SELECT * FROM UserData WHERE pwd='";
                   $sql.= $password."' AND account='".$account."'";
                   
-                  if ( Server::$mysqli->query($sql)->num_rows > 0 ) {
+                  $ex =Server::$db->query($sql);
+                  $count=$ex->rowCount();
+                  if ( $count > 0 ) {
                      
                      $sql="SELECT u_id,id FROM UserData WHERE account='$account'";//抓取使用者名稱
-                     $findUsername=Server::$mysqli->query($sql);
-                     if($findUsername){
-                        $log="INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES ('$u_id','Login','".Server::$myip."')";
-                        Server::$mysqli->query($log);
-                        }
-                     $id_result=$findUsername->fetch_assoc();
+                     $findUsername=Server::$db->query($sql);
+                     
+                     $id_result=$findUsername->fetch(PDO::FETCH_ASSOC);
+                    
                      $user_id= $id_result['id'];
                      $u_id=$id_result['u_id'];
+                     
+                     if( $id_result){
+                        $log=Server::$db->prepare("INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES(:u_id,:Status,:IP)");
+                        $log->execute(array(
+                                    ':u_id'=>$u_id,
+                                    ':Status'=>'Login',
+                                    ':IP'=>Server::$myip
+                           ));
+
+                        }
                      //更新使用者登入次數
-                     $Visit="UPDATE UserData SET visit=visit+1 account='$account'";
-                     Server::$mysqli->query($Visit);
+                     $Visit="UPDATE UserData SET visit=visit+1 where account='$account'";
+                     Server::$db->query($Visit);
                         
                      $_SESSION['status']=true;
                      $_SESSION['u_id']=$u_id;
@@ -50,6 +58,14 @@ class Login {
       }
       
       }
+      
+      function logout(){
+            /*$u_id=$_SESSION['u_id'];
+            $delete="DELETE FROM `UserLoginTime` WHERE u_id='$u_id'";
+            $go_delete=mysqli_query($link,$delete); */
+            session_unset();
+            header("Location:/EasyMVC/");
+        }
       
 }
 ?>
