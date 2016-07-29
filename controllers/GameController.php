@@ -18,9 +18,10 @@ class GameController extends Controller {
         if(isset($_POST['login'])){
         $login= $this->model("Login");
         $Errmsg=$login->CheckLogin();
-        echo $Errmsg;
+        $this->view("showOnedata",$Errmsg);
         }else{
-            echo "<script> alert('Error!');</script>";
+            $ans= "<script> alert('Error!');</script>";
+            $this->view("showOnedata",$ans);
         }
     }     //驗證登入資料
     
@@ -31,33 +32,35 @@ class GameController extends Controller {
     
     function GoSignup(){
         $gotosn = $this->model("player");
-        echo $gotosn->GoSignup();
+        $ans=$gotosn->GoSignup();
+        $this->view("showOnedata",$ans);
     }    //進行註冊
     
     function loadEdit(){
         $findAcc = $this->model("player");
         $usremail=$findAcc->searchUserdata();
         $load = $this->model("load");
-        // echo "<script>alert(".$row.")</script>";
-        echo $load->loadEdit($usremail);
+        // $ErrorMsg= "<script>alert(".$row.")</script>";
+        $ans=$load->loadEdit($usremail);
+        $this->view("showOnedata",$ans);
     }    //載入編輯畫面
     
     function GoEdit(){
         if(isset($_POST['go_edit'])){
         
         if($_POST['Password']=="")
-        echo 'Password empty';
+        $ErrorMsg= 'Password empty';
         if($_POST["Username"]=="")
-        echo 'UserName empty';
+        $ErrorMsg= 'UserName empty';
         if($_POST['Email']=="")
-        echo 'E-mail empty';
+        $ErrorMsg= 'E-mail empty';
         if($_POST['Password']!==$_POST['RePassword']){
-        echo 'Password Not The Same';}
+        $ErrorMsg= 'Password Not The Same';}
         else{
         $edit=$this->model("edit");
         $edit->edit();
         }
-            
+        $this->view("showOnedata",$ErrorMsg);
         }
     }      //進行編輯
     
@@ -76,7 +79,7 @@ class GameController extends Controller {
             $playerC = $this->model("player");
             $min=3;                         //設定間隔時間
             $ans=$playerC->CountOnlinePlayer($min);
-            $this->view("showCountPlayers",$ans);
+            $this->view("showOnedata",$ans);
         } //計算線上玩家
     
     function UserLvExp(){
@@ -93,12 +96,12 @@ class GameController extends Controller {
         $score = $this->model("player");
         $result=$score->showUserLogScore();
         
-        echo "<table border='1px'width='100%' height='100%'> <td>NO.</td><td>Score</td>";
+        $ans="<table border='1px'width='100%' height='100%'> <td>NO.</td><td>Score</td>";
             foreach($result as $key=>$value){
-               echo "<tr><td>".($key+1)."</td><td>".$result[$key][0]."</td></tr>";
+               $ans.= "<tr><td>".($key+1)."</td><td>".$result[$key][0]."</td></tr>";
             }
-        echo "</table>";
-        
+        $ans.= "</table>";
+        $this->view("showOnedata",$ans);
           
         }      //查分數紀錄
     
@@ -106,11 +109,12 @@ class GameController extends Controller {
         $rank = $this->model("player");
         $rank_score=$rank->showGlobalRank();
         
-        echo "<table border='1px'width='100%' height='100%'> <td>Rank</td><td>ID</td><td>Score</td>";
+        $ans= "<table border='1px'width='100%' height='100%'> <td>Rank</td><td>ID</td><td>Score</td>";
         foreach ($rank_score as $key=>$value) {
-           echo "<tr><td>".($key+1)."</td><td>".$value[0]."</td><td>".$value[1]."</td></tr>";
+           $ans.= "<tr><td>".($key+1)."</td><td>".$value[0]."</td><td>".$value[1]."</td></tr>";
            }
-        echo "</table>";
+        $ans.= "</table>";
+        $this->view("showOnedata",$ans);
         
     }        //查詢全部玩家排行
     
@@ -125,18 +129,18 @@ class GameController extends Controller {
             
         }else{
             
-            echo " UpdateStatus Error";
+            $ans= " UpdateStatus Error";
+            $this->view("showOnedata",$ans);
             
         }
     }     //更新使用者狀態
     
     function startGame(){
-        session_start();
         $u_id=$_SESSION['u_id'];
         //一顆球的配色
       // if(isset($_GET["start"]))
         if(!isset($_GET['lv'])){
-           echo 'Error';
+           $this->view("showOnedata",'Error');
         }else{
             $start=$this->model("game");
             $ballNum=0;
@@ -144,11 +148,11 @@ class GameController extends Controller {
                 $ans=$start->CreateColorBall($u_id,$ballNum,$ans[0]);
                 
                 if($ballNum==0){
-                $colorball=$ans[1];
-                $ans=array($colorball);
+                
+                $ball=array($ans[1]);
                     
                 }elseif($ballNum>0){
-                    array_push($ans,$colorball);
+                    array_push($ball,$ans[1]);
                 }else{
                     exit();
                     
@@ -157,18 +161,18 @@ class GameController extends Controller {
                 $ballNum=$ballNum+1;
             }while($ballNum<$_GET["lv"]);
             
-            $this->view("showColorBall",$ans);
+            $this->view("showForeach",$ball);
         }
     }        //啟動遊戲動作
     
     function endGame(){
         
         if(!isset($_GET["score"])){
-                echo "Error";
-                  }else{
-        $end = $this->model("game");
-        echo $end->insertScore();
-        
+                $this->view("showOnedata","Error");
+        }else{
+                $end = $this->model("game");
+                $ans = $end->insertScore();
+                $this->view("showOnedata", $ans);
         }
     }          //遊戲結束時動作
 
