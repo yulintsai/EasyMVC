@@ -81,8 +81,8 @@
 
         }
         
-        public function CreateColorBall($u_id,$x,$w_b){
-
+        public function CreateColorBall($ballNum,$w_b){
+            $u_id=$_SESSION['u_id'];
             $ball= array("color","rd"); //宣告球的資訊陣列
             $bc=&$ball['color']; //$bc為ball陣列key值為color的變數
             $bc = array("BLACK","WHITE","GRAY","RED","PINK","YELLOW","GREEN","BLUE","ORANGE","PURPLE");  //將球的顏色放入ball陣列key值為color的中
@@ -104,7 +104,7 @@
             }*/
         
             $w_b = $this->checkW_b($w_b,$all_color);
-            $num=$x+1;
+            $num=$ballNum+1;
             
             $ans=($all_color[2]==$this->font_c)?('2'):('-2');
             ($ans>0)?($BallColorAns='True'):($BallColorAns='False');

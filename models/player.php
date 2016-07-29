@@ -134,7 +134,7 @@
         }//更新狀態
             
         function UserLvExp(){
-            
+                $user_id=strtoupper($_SESSION['user_id']);
                 $u_id=$_SESSION['u_id'];
                 $sql="SELECT SUM(score) FROM `GameLog` WHERE u_id='$u_id'";//players total
                 $PlayerScore=Server::$mysqli->query($sql)->fetch_assoc();

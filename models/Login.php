@@ -8,10 +8,7 @@ class Login {
             Server::pdoConnect();
         }
       
-      function CheckLogin(){ 
-      
-      $account =  $_POST["Account"];
-      $password= $_POST["Password"];
+      function CheckLogin($account,$password){ 
       
       // 檢查是否輸入使用者名稱和密碼
       if(($account&&$password)==""){

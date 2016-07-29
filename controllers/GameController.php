@@ -16,8 +16,10 @@ class GameController extends Controller {
     
     function Gologin(){
         if(isset($_POST['login'])){
+        $account =  $_POST["Account"];
+        $password= $_POST["Password"];    
         $login= $this->model("Login");
-        $Errmsg=$login->CheckLogin();
+        $Errmsg=$login->CheckLogin($account,$password);
         $this->view("showOnedata",$Errmsg);
         }else{
             $ans= "<script> alert('Error!');</script>";
@@ -72,6 +74,8 @@ class GameController extends Controller {
     
     // UPDATE
     
+    // DELETE
+    
     
    /*==========================================================*/ 
     
@@ -83,7 +87,6 @@ class GameController extends Controller {
         } //計算線上玩家
     
     function UserLvExp(){
-        $user_id=strtoupper($_SESSION['user_id']);
         $LvExp = $this->model("player");
         $p_score=$LvExp->UserLvExp();
         $lv=(ceil($p_score/50)+1);//玩家等級
@@ -136,7 +139,7 @@ class GameController extends Controller {
     }     //更新使用者狀態
     
     function startGame(){
-        $u_id=$_SESSION['u_id'];
+        
         //一顆球的配色
       // if(isset($_GET["start"]))
         if(!isset($_GET['lv'])){
@@ -145,7 +148,7 @@ class GameController extends Controller {
             $start=$this->model("game");
             $ballNum=0;
             do{
-                $ans=$start->CreateColorBall($u_id,$ballNum,$ans[0]);
+                $ans=$start->CreateColorBall($ballNum,$ans[0]);
                 
                 if($ballNum==0){
                 
@@ -157,11 +160,10 @@ class GameController extends Controller {
                     exit();
                     
                 }
-                // $this->view("show",$colorball);
                 $ballNum=$ballNum+1;
             }while($ballNum<$_GET["lv"]);
             
-            $this->view("showForeach",$ball);
+            $this->view("showForeach",$ball);//到view echo球
         }
     }        //啟動遊戲動作
     
