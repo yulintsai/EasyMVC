@@ -43,8 +43,7 @@ class GameController extends Controller {
     }    //載入編輯畫面
     
     function GoEdit(){
-        
-        $edit=$this->model("edit");
+        if(isset($_POST['go_edit'])){
         
         if($_POST['Password']=="")
         echo 'Password empty';
@@ -55,7 +54,10 @@ class GameController extends Controller {
         if($_POST['Password']!==$_POST['RePassword']){
         echo 'Password Not The Same';}
         else{
+        $edit=$this->model("edit");
         $edit->edit();
+        }
+            
         }
     }      //進行編輯
     
@@ -72,13 +74,19 @@ class GameController extends Controller {
     
     function CountOnlinePlayer(){
             $playerC = $this->model("player");
-            $min=5;                         //設定間隔時間
-            echo $playerC->CountOnlinePlayer($min);
+            $min=3;                         //設定間隔時間
+            $ans=$playerC->CountOnlinePlayer($min);
+            $this->view("showCountPlayers",$ans);
         } //計算線上玩家
     
     function UserLvExp(){
+        $user_id=strtoupper($_SESSION['user_id']);
         $LvExp = $this->model("player");
-        echo $LvExp->UserLvExp();
+        $p_score=$LvExp->UserLvExp();
+        $lv=(ceil($p_score/50)+1);//玩家等級
+        $exp=(($p_score%50)*2);//玩家經驗值
+        $data=array($lv,$exp,$p_score,$user_id);
+        $this->view("showLvExp",$data);
     }         //玩家經驗值資料
     
     function UserLogScore(){
@@ -133,9 +141,23 @@ class GameController extends Controller {
             $start=$this->model("game");
             $ballNum=0;
             do{
-                echo $start->CreateColorBall($u_id); 
+                $ans=$start->CreateColorBall($u_id,$ballNum,$ans[0]);
+                
+                if($ballNum==0){
+                $colorball=$ans[1];
+                $ans=array($colorball);
+                    
+                }elseif($ballNum>0){
+                    array_push($ans,$colorball);
+                }else{
+                    exit();
+                    
+                }
+                // $this->view("show",$colorball);
                 $ballNum=$ballNum+1;
             }while($ballNum<$_GET["lv"]);
+            
+            $this->view("showColorBall",$ans);
         }
     }        //啟動遊戲動作
     

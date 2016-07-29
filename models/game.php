@@ -81,7 +81,7 @@
 
         }
         
-        public function CreateColorBall($u_id){
+        public function CreateColorBall($u_id,$x,$w_b){
 
             $ball= array("color","rd"); //宣告球的資訊陣列
             $bc=&$ball['color']; //$bc為ball陣列key值為color的變數
@@ -118,15 +118,17 @@
     #==========================================================================================
             //產生球
             //並將配色分配到style內
-            
-            return "<button class='ball' id='$num' name='$ans'
+            $ball= "<button class='ball' id='$num' name='$ans'
                                 style='
                                 border:$all_color[0] 15px solid;
                                 color: $all_color[1];
                                 background-color:$all_color[2];'
                                 ;>
                                 $this->font_c</button>";
-            unset($this->font_c);                    
+            //unset($this->font_c);    
+            $show= array($w_b,$ball);
+            return $show;
+                            
     }
         
         private function checkW_b($w_b,$all_color){
