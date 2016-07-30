@@ -4,11 +4,10 @@ class Login {
    
       function __construct(){
             // Server::setConnect();
-            Server::GetIP();
             Server::pdoConnect();
         }
       
-      function CheckLogin($account,$password){ 
+      function CheckLogin($account,$password,$ip){ 
       
       // 檢查是否輸入使用者名稱和密碼
       if(($account&&$password)==""){
@@ -38,7 +37,7 @@ class Login {
                         $log->execute(array(
                                     ':u_id'=>$u_id,
                                     ':Status'=>'Login',
-                                    ':IP'=>Server::$myip
+                                    ':IP'=>$ip
                            ));
 
                         }
@@ -64,7 +63,7 @@ class Login {
             $delete="DELETE FROM `UserLoginTime` WHERE u_id='$u_id'";
             $go_delete=mysqli_query($link,$delete); */
             session_unset();
-            header("Location:/EasyMVC/");
+            return "logout Success";
         }
       
 }

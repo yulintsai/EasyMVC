@@ -150,13 +150,6 @@
             return (Server::$mysqli->query($sql));
         }//更新登入次數
         
-        function searchUserdata(){
-            $u_id=$_SESSION['u_id'];
-            $edit1_sql='SELECT account,email FROM UserData WHERE u_id='.$u_id;
-            $row=Server::$mysqli->query($edit1_sql)->fetch_row();
-            return $row[1];
-        }//找使用者帳號跟信箱
-        
         
         
         function __destruct(){

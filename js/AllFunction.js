@@ -76,28 +76,34 @@
     }
 }
 
+       
+
 /*---------------------------------------------------*/
 
+
+
 $(document).ready(function(){
- 
+       
+       
  
       /*----------------註冊事件--------------------------------*/
       
       $("#signup_btn").click(function(){
               $("#login_form").hide(1000,function(){
-                  $("#login_div").load("/EasyMVC/Game/loadSignup");
+                  $("#login_div").load("/EasyMVC/Login/loadSignup");
                   });
               });
               
        /*----------------訪客計算器--------------------------------*/
        
-      $.ajax({url: "/EasyMVC/Game/AddVisitor",type:"POST"});
+      $.ajax({url: "/EasyMVC/Login/AddVisitor",type:"POST"});
       
       game_time=21;                        //設定遊戲秒數
-      
       /*-----------------載入玩家等級------------------------------*/
-      
-      $('#player').load("/EasyMVC/Game/UserLvExp"); 
+      $('#player').load('/EasyMVC/Game/UserLvExp');
+     // $.get("/EasyMVC/Game/UserLvExp",function(data){
+     //   $('#player').html(data);});
+     
         
       /*-----------------開始遊戲事件------------------------------*/ 
       
@@ -202,18 +208,21 @@ $(document).ready(function(){
             
       $("#edit").click(function(){ //編輯事件
                  $('.i_m,#start,#g_list').hide(500);
-                 $("#ball_box").load("/EasyMVC/Game/loadEdit");
+                 $("#ball_box").load("/EasyMVC/Login/loadEdit");
              });      
             
       $('#logout').click(function() { //登出事件
-           if(confirm("Are You Sure to Logout?"))
-            {  
-             document.location.href="/EasyMVC/Game/Logout";
-            }
-            else
-            {
-            //alert("你按下取消");
-            }
+      
+      document.location.href="/EasyMVC/Login/logout";
+           // if(confirm("Are You Sure to Logout?"))
+           //  {  
+           //  // $.post("/EasyMVC/Game/logout",function(result){
+            
+           //  }
+           //  else
+           //  {
+           //  //alert("你按下取消");
+           //  }
        })      
     
         
@@ -221,7 +230,7 @@ $(document).ready(function(){
      /*-----------------------------線上人數統計器------------*/
              function ShowOnlinePlayers(){
               $.ajax({url:'/EasyMVC/Game/CountOnlinePlayer',type:'POST',async: true,success:function(data){$('#show_online').html(data);}});
-              var t=setTimeout(ShowOnlinePlayers,1500);
+              var t=setTimeout(ShowOnlinePlayers,3000);
           };      
               ShowOnlinePlayers();
 });
