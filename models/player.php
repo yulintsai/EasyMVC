@@ -3,7 +3,6 @@
         
         function __construct(){
                  Server::setConnect();
-                 Server::GetIP();
         }
           
         function CountOnlinePlayer($min){
@@ -59,7 +58,7 @@
                 $check=0;
                 
                 if (($_POST["Account"])=="" ){
-                        return $msg1."Name".$msg2;}
+                        return $msg1."Account empty".$msg2;}
                     else{
                         $account=$this->test_input($_POST["Account"]) ;
                         if (!preg_match("/^[a-zA-Z ]*$/",$account)) {
@@ -104,13 +103,11 @@
                         
                           if(Server::$mysqli->query($sql))
                                 {
-                                        header("Location: /EasyMVC/");
-                                        return  $msg1.'OK!'.$msg2; ;
+                                        return  $msg1.'Sign up Success!'.$msg2; ;
                                 }
                                 else
                                 {
-                                        header("Location: /EasyMVC/");
-                                        return  $msg1.'ERROR!'.$msg2; ;
+                                        return  $msg1.'Sign up ERROR!'.$msg2; ;
                                 }
                             }
                     
@@ -124,11 +121,10 @@
               }   
             }//註冊帳號
         
-        function UpdateStatus(){
+        function UpdateStatus($status,$myip){
             
-            $status=$_GET['status'];
             $u_id=$_SESSION['u_id'];
-            $updateStatue="INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES ('$u_id','$status','".Server::$myip."')";
+            $updateStatue="INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES ('$u_id','$status','$myip')";
             Server::$mysqli->query($updateStatue);
             
         }//更新狀態
@@ -152,9 +148,6 @@
         
         
         
-        function __destruct(){
-            Server::closeConnect();
-        }
         
     }
 ?>

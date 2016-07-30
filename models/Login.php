@@ -11,7 +11,7 @@ class Login {
       
       // 檢查是否輸入使用者名稱和密碼
       if(($account&&$password)==""){
-         return "<script>alert('NO input!');location.href='/EasyMVC/'</script>t";
+         return "NO input!";
          }else{
             
                   $password=md5($password);
@@ -48,11 +48,10 @@ class Login {
                      $_SESSION['status']=true;
                      $_SESSION['u_id']=$u_id;
                      $_SESSION['user_id']=$user_id;
-                     header("Location: /EasyMVC/");
-                     exit();
+                     return "Login Success";
                   } 
                      else {  
-                    return "<script> alert('Account or Password Error!');location.href='/EasyMVC/'</script>";
+                     return "Account or Password Error!";
                   }//登入失敗
       }
       

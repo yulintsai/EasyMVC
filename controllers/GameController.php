@@ -52,14 +52,15 @@ class GameController extends Controller {
     function UpdateStatus(){
         
         if($_GET['status']){
-            
+            $find = $this->model("data");
+            $myip = $find->getIP();
             $update = $this->model("player");
-            $update->UpdateStatus();
+            $update->UpdateStatus($_GET['status'],$myip);
             
         }else{
             
             $ans= " UpdateStatus Error";
-            $this->view("showOnedata",$ans);
+            $this->view("alertMsg",$ans);
             
         }
     }     //更新使用者狀態
@@ -73,8 +74,10 @@ class GameController extends Controller {
         }else{
             $start=$this->model("game");
             $ballNum=0;
-            do{
-                $ans=$start->CreateColorBall($ballNum,$ans[0]);
+            do{ 
+                $find = $this->model("data");
+                $myip = $find->getIP();
+                $ans=$start->CreateColorBall($ballNum,$ans[0],$myip);
                 
                 if($ballNum==0){
                 
@@ -98,8 +101,10 @@ class GameController extends Controller {
         if(!isset($_GET["score"])){
                 $this->view("showOnedata","Error");
         }else{
+                $find= $this->model("data");
+                $myip=$find->getIP();
                 $end = $this->model("game");
-                $ans = $end->insertScore();
+                $ans = $end->insertScore($_GET["score"],$myip);
                 $this->view("showOnedata", $ans);
         }
     }          //遊戲結束時動作

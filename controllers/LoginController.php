@@ -19,17 +19,23 @@ class LoginController extends Controller {
     }  //統計瀏覽人數
     
     function Gologin(){
+        
         if(isset($_POST['login'])){
         $account =  $_POST["Account"];
-        $password= $_POST["Password"];    
-        $login= $this->model("Login");
+        $password= $_POST["Password"];
+        
         $find=$this->model("data");
         $ip=$find->getIP();
+        
+        $login= $this->model("Login");
         $Errmsg=$login->CheckLogin($account,$password,$ip);
-        $this->view("showOnedata",$Errmsg);
+        $this->view("alertMsg",$Errmsg);
+        header("Refresh:0;/EasyMVC/");
+        
         }else{
-            $ans= "<script> alert('Error!');</script>";
-            $this->view("showOnedata",$ans);
+            
+        $this->view("alertMsg",'Error!');
+        
         }
     }     //驗證登入資料
     
@@ -76,9 +82,10 @@ class LoginController extends Controller {
  
         $search = $this->model("data");
         $ip= $search->getIP();//找IP
-        $usremail= $search->searchUserdata();//找Email
-        $ans= $search->mergeData($usremail,$ip);
+        $data= $search->searchUserdata();//找Email
+        $ans= $search->mergeData($data['email'],$ip);
         $this->view("loadEdit",$ans);
+
         
     }    //載入編輯畫面
     

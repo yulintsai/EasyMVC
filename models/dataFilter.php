@@ -1,5 +1,8 @@
 <?php
     class dataFilter{
+        function __construct(){
+            Server::setConnect();
+        }
         
         function test_input($data) {
           $data = trim($data);

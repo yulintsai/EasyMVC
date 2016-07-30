@@ -2,12 +2,12 @@
 class data{
     
     function __construct(){
-                 Server::setConnect();
+                 Server::pdoConnect();
         }
     
     function mergeData($usremail,$ip){
         $user_id=$_SESSION['user_id'];
-        return $a=array($user_id,$usremail,$ip);
+        return array($user_id,$usremail,$ip);
     }
     
     function getIP(){
@@ -24,12 +24,10 @@ class data{
     function searchUserdata(){
             $u_id=$_SESSION['u_id'];
             $edit1_sql='SELECT account,email FROM UserData WHERE u_id='.$u_id;
-            $row=Server::$mysqli->query($edit1_sql)->fetch_row();
-            return $row[1];
+            $row=Server::$db->query($edit1_sql);
+            $result=$row->fetch(PDO::FETCH_ASSOC);
+            return $result;
         }//找使用者帳號跟信箱
         
-    function __destruct(){
-            Server::closeConnect();
-        }    
 }
 ?>

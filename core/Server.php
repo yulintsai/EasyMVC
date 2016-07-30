@@ -19,10 +19,6 @@
             Server::$mysqli=$mysqli;
         }
         
-        public static function closeConnect() {
-            Server::$mysqli->close();
-        }
-        
         public static function pdoConnect(){
             
             $config['db']['dsn']='mysql:host=localhost; dbname=project; charset=utf8';
@@ -42,20 +38,6 @@
              Server::$db=$db;
                 
             }
-        
-        public static function GetIP(){
-            if(!empty($_SERVER['HTTP_CLIENT_IP'])){
-                $myip = $_SERVER['HTTP_CLIENT_IP'];
-             }else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
-                $myip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-             }else{
-                $myip= $_SERVER['REMOTE_ADDR'];
-             }
-             Server::$myip = $myip;
-        }
-        
-        
-        
         
     }
 ?>

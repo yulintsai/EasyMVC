@@ -144,7 +144,7 @@ $(document).ready(function(){
            $("#g_c").text("Try To Choose Right ColorBall");
        });
        
-      /*----------------------------------------------------------*/ 
+      /*-------------------全部排行事件-----------------------------*/ 
       
       $('#x').click(function(){$("#game_over").hide(1000);});//GAMEOVER畫面右上角按鈕
       
@@ -156,12 +156,16 @@ $(document).ready(function(){
           $('#user_scoreboard').html(data);});
       });
       
+      /*-------------------自我排行事件-----------------------------*/ 
+      
       $('#log,#nav_rank').click(function() { //左邊個人排行按鈕
            $('#game_over').show(1000);
            url_rank="/EasyMVC/Game/UserLogScore?";
            $.get(url_rank,function(data){
            $('#user_scoreboard').html(data);});
       });
+      
+      /*-------------------滑鼠移到遊戲模式選擇----------------------*/ 
       
       $(".i_m").mouseover(function(){
       $(this).animate({'top':'39%'});
@@ -170,6 +174,8 @@ $(document).ready(function(){
       $(this).animate({'top':'41%'});
       $(this).animate({'top':'40%'});
      });
+    
+      /*------------------模式選擇事件--------------------------------*/
     
       $('.i_m').click(function() { //左邊模式選擇器按鈕
           $("#start").prop("value","START");
@@ -205,24 +211,26 @@ $(document).ready(function(){
                  $('#Md,#start,.ball').hide()
                  $('#Easy,#Normal,#Hard,#Learning').show(500);
              });
-            
+             
+      /*--------------------編輯事件--------------------------------*/      
+      
       $("#edit").click(function(){ //編輯事件
                  $('.i_m,#start,#g_list').hide(500);
                  $("#ball_box").load("/EasyMVC/Login/loadEdit");
              });      
-            
+      /*------------------------登出事件--------------------------*/      
       $('#logout').click(function() { //登出事件
       
-      document.location.href="/EasyMVC/Login/logout";
-           // if(confirm("Are You Sure to Logout?"))
-           //  {  
-           //  // $.post("/EasyMVC/Game/logout",function(result){
+      
+           if(confirm("Are You Sure to Logout?"))
+            {  
+           document.location.href="/EasyMVC/Login/logout";
             
-           //  }
-           //  else
-           //  {
-           //  //alert("你按下取消");
-           //  }
+            }
+            else
+            {
+            //alert("你按下取消");
+            }
        })      
     
         
