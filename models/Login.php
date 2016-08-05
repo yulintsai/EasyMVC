@@ -3,7 +3,6 @@
 class Login {
    
       function __construct(){
-            // Server::setConnect();
             Server::pdoConnect();
         }
       

@@ -2,7 +2,8 @@
     class player{
         
         function __construct(){
-                 Server::setConnect();
+                Server::pdoConnect();
+                Server::setConnect();
         }
           
         function CountOnlinePlayer($min){
@@ -20,14 +21,14 @@
                  '$time2'
                 )";//顯示在線人數sql語法
     
-            $ans=Server::$mysqli->query($sql)->fetch_row();
+            $ans=Server::$db->query($sql)->fetch();
             return "Online Players<br>".$ans[0];//在線人數
         }//計算線上人數
         
         function showGlobalRank(){
             
               $rank_sql="SELECT DISTINCT `id`,`score` FROM `GameLog` ORDER BY `score` DESC ,`time` ASC LIMIT 5";
-              $rank_score=Server::$mysqli->query($rank_sql)->fetch_all();
+              $rank_score=Server::$db->query($rank_sql)->fetchAll();
               return $rank_score;
             
         }//查看全部玩家排行
@@ -36,7 +37,7 @@
             
                 $u_id=$_SESSION['u_id'];
                 $myscore_sql="SELECT DISTINCT `score` FROM `GameLog` WHERE `u_id`='$u_id' ORDER BY `score` DESC LIMIT 6";
-                $result=Server::$mysqli->query($myscore_sql)->fetch_all();
+                $result=Server::$db->query($myscore_sql)->fetchAll();
                 return $result;
             }//查看分數紀錄
         
@@ -93,15 +94,22 @@
                       $username=$this->test_input($_POST['Username']);
                        //check account 重複
                       $sql = "SELECT `account` FROM `UserData` WHERE `account`='$account'";
-                      $result= Server::$mysqli->query($sql)->fetch_row();
+                      $result= Server::$db->query($sql)->fetch();
                      
                       if($account==$result[0]){
                           return  $msg1.'The account is been use!'.$msg2; ;
                       }else{
                     
-                        $sql="INSERT INTO `UserData`(`account`,`id`,`pwd`,`email`,`ip`)VALUES('$account','$username','$pw','$email','$ip')";
+                        $sql="INSERT INTO `UserData`(`account`,`id`,`pwd`,`email`,`ip`)VALUES(:account,:username,:pw,:email,:ip)";
                         
-                          if(Server::$mysqli->query($sql))
+                        $ans=Server::$db->prepare($sql);
+                        $ans->bindParam(':account',$account);
+                        $ans->bindParam(':username',$username);
+                        $ans->bindParam(':pw',$pw);
+                        $ans->bindParam(':email',$email);
+                        $ans->bindParam(':ip',$ip);
+                        $ans->execute();
+                          if($ans->execute())
                                 {
                                         return  $msg1.'Sign up Success!'.$msg2; ;
                                 }
@@ -124,8 +132,12 @@
         function UpdateStatus($status,$myip){
             
             $u_id=$_SESSION['u_id'];
-            $updateStatue="INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES ('$u_id','$status','$myip')";
-            Server::$mysqli->query($updateStatue);
+            $updateStatue="INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES (:u_id,:status,:myip)";
+            $ans=Server::$db->prepare($updateStatue);
+            $ans->bindParam(':u_id',$u_id);
+            $ans->bindParam(':status',$status);
+            $ans->bindParam(':myip',$myip);
+            $ans->execute();
             
         }//更新狀態
             
@@ -133,7 +145,7 @@
                 $user_id=strtoupper($_SESSION['user_id']);
                 $u_id=$_SESSION['u_id'];
                 $sql="SELECT SUM(score) FROM `GameLog` WHERE u_id='$u_id'";//players total
-                $PlayerScore=Server::$mysqli->query($sql)->fetch_assoc();
+                $PlayerScore=Server::$db->query($sql)->fetch(PDO::FETCH_ASSOC);
                 $p_score=$PlayerScore['SUM(score)'];//總分
                 $result=array("score"=>$p_score,"user_id"=>$user_id);
                 return $result;
@@ -143,7 +155,7 @@
         function addVisitor(){
             
             $sql="UPDATE information SET visit_num=visit_num+1";//games total
-            return (Server::$mysqli->query($sql));
+            return (Server::$db->query($sql));
         }//更新登入次數
         
         

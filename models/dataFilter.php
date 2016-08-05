@@ -11,8 +11,5 @@
           $data = Server::$mysqli->real_escape_string($data);
           return $data;
         } //過濾Input
-        
-        
-        
     }
 ?>
