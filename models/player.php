@@ -1,12 +1,12 @@
 <?php
     class player{
         
-        function __construct(){
+        public function __construct(){
                 Server::pdoConnect();
                 Server::setConnect();
         }
           
-        function CountOnlinePlayer($min){
+        public function CountOnlinePlayer($min){
             
             $d=strtotime("-".$min."min");//以五分鐘為計算計算在線數
             $time1 = date("Y-m-d H:i:s",$d);
@@ -25,7 +25,7 @@
             return "Online Players<br>".$ans[0];//在線人數
         }//計算線上人數
         
-        function showGlobalRank(){
+        public function showGlobalRank(){
             
               $rank_sql="SELECT DISTINCT `id`,`score` FROM `GameLog` ORDER BY `score` DESC ,`time` ASC LIMIT 5";
               $rank_score=Server::$db->query($rank_sql)->fetchAll();
@@ -33,7 +33,7 @@
             
         }//查看全部玩家排行
         
-        function showUserLogScore(){
+        public function showUserLogScore(){
             
                 $u_id=$_SESSION['u_id'];
                 $myscore_sql="SELECT DISTINCT `score` FROM `GameLog` WHERE `u_id`='$u_id' ORDER BY `score` DESC LIMIT 6";
@@ -41,7 +41,7 @@
                 return $result;
             }//查看分數紀錄
         
-        function test_input($data) {
+        public function test_input($data) {
           $data = trim($data);
           $data = stripslashes($data);
           $data = htmlspecialchars($data);
@@ -49,7 +49,7 @@
           return $data;
         } //過濾Input
         
-        function GoSignup(){
+        public function GoSignup(){
             
             $msg1="<script> alert('";
             $msg2="');location.href='/EasyMVC'</script>";
@@ -129,7 +129,7 @@
               }   
             }//註冊帳號
         
-        function UpdateStatus($status,$myip){
+        public function UpdateStatus($status,$myip){
             
             $u_id=$_SESSION['u_id'];
             $updateStatue="INSERT INTO `UserLoginTime`(`u_id`,`Status`,`IP`) VALUES (:u_id,:status,:myip)";
@@ -141,7 +141,7 @@
             
         }//更新狀態
             
-        function UserLvExp(){
+        public function UserLvExp(){
                 $user_id=strtoupper($_SESSION['user_id']);
                 $u_id=$_SESSION['u_id'];
                 $sql="SELECT SUM(score) FROM `GameLog` WHERE u_id='$u_id'";//players total
@@ -152,7 +152,7 @@
                 
         }//計算玩家等級經驗值
         
-        function addVisitor(){
+        public function addVisitor(){
             
             $sql="UPDATE information SET visit_num=visit_num+1";//games total
             return (Server::$db->query($sql));

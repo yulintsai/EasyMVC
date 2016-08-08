@@ -6,7 +6,7 @@ class edit extends dataFilter{
             Server::setConnect();
         }
     
-    function edit(){
+    public function edit(){
         
         $username=$this->test_input($_POST["Username"]);
         $email=$this->test_input($_POST['Email']);

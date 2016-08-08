@@ -3,7 +3,7 @@ class LoginController extends Controller {
     
     /*==========================================================*/
     
-    function index() {
+    public function index() {
         if(!isset($_SESSION['status'])){
         $this->view("index");
         }else{
@@ -13,12 +13,12 @@ class LoginController extends Controller {
     
     /*==========================================================*/
     
-    function AddVisitor(){
+    public function AddVisitor(){
         $add = $this->model("player");
         $add->addVisitor();
     }  //統計瀏覽人數
     
-    function Gologin(){
+    public function Gologin(){
         
         if(isset($_POST['login'])){
         $account =  $_POST["Account"];
@@ -26,7 +26,9 @@ class LoginController extends Controller {
         
         $find=$this->model("data");
         $ip=$find->getIP();
-        
+        $test=$this->model("dataFilter");
+        $account=$test->test_input($account);//資料過濾
+        $password=$test->test_input($password);
         $login= $this->model("Login");
         $Errmsg=$login->CheckLogin($account,$password,$ip);
         $this->view("alertMsg",$Errmsg);
@@ -39,7 +41,7 @@ class LoginController extends Controller {
         }
     }     //驗證登入資料
     
-    function GoSignup(){
+    public function GoSignup(){
         
         $gotosn = $this->model("player");
         $ans=$gotosn->GoSignup();
@@ -48,7 +50,7 @@ class LoginController extends Controller {
         
     }    //進行註冊
     
-    function GoEdit(){
+    public function GoEdit(){
         if(isset($_POST['go_edit'])){
         
         if($_POST['Password']=="")
@@ -72,13 +74,13 @@ class LoginController extends Controller {
     
     /*==========================================================*/
     
-    function loadSignup(){
+    public function loadSignup(){
         $find = $this->model("data");
         $ip=$find->getIP();//找IP
         $this->view("loadSignup",$ip);
     }  //載入註冊畫面
     
-    function loadEdit(){
+    public function loadEdit(){
  
         $search = $this->model("data");
         $ip= $search->getIP();//找IP
@@ -91,7 +93,7 @@ class LoginController extends Controller {
     
     /*==========================================================*/
     
-    function logout(){
+    public function logout(){
             $logout = $this->model("Login");
             $msg=$logout->logout();
             $this->view("alertMsg",$msg);

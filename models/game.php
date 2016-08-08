@@ -13,7 +13,7 @@
 
     #=================================================    
         
-        function insertScore($score,$myip){
+        public function insertScore($score,$myip){
                
                 
                 $u_id=$_SESSION['u_id'];

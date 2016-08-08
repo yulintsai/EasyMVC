@@ -2,11 +2,11 @@
 <?php
 class Login {
    
-      function __construct(){
+      public function __construct(){
             Server::pdoConnect();
         }
       
-      function CheckLogin($account,$password,$ip){ 
+      public function CheckLogin($account,$password,$ip){ 
       
       // 檢查是否輸入使用者名稱和密碼
       if(($account&&$password)==""){
@@ -56,7 +56,7 @@ class Login {
       
       }
       
-      function logout(){
+      public function logout(){
             /*$u_id=$_SESSION['u_id'];
             $delete="DELETE FROM `UserLoginTime` WHERE u_id='$u_id'";
             $go_delete=mysqli_query($link,$delete); */

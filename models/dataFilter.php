@@ -1,10 +1,10 @@
 <?php
     class dataFilter{
-        function __construct(){
+        public function __construct(){
             Server::setConnect();
         }
         
-        function test_input($data) {
+        public function test_input($data) {
           $data = trim($data);
           $data = stripslashes($data);
           $data = htmlspecialchars($data);
